@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Gamepad2,
@@ -71,6 +71,23 @@ const ICON_SIZES = { 0: 28, 1: 18, 2: 14, 3: 10 } as const;
 
 const SkillTree = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [svgCenter, setSvgCenter] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Measure the container so SVG lines share the exact same origin as the CSS nodes
+  useEffect(() => {
+    const update = () => {
+      if (containerRef.current) {
+        setSvgCenter({
+          x: containerRef.current.offsetWidth / 2,
+          y: containerRef.current.offsetHeight / 2,
+        });
+      }
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   const nodePositions = useMemo(() => {
     return SKILLS.reduce((acc, skill) => {
@@ -99,35 +116,38 @@ const SkillTree = () => {
 
       <div className="relative h-[700px] w-full flex items-center justify-center select-none overflow-hidden">
         <div className="w-full h-full relative flex items-center justify-center">
-          <div className="relative w-full h-full max-w-4xl flex items-center justify-center">
 
-            {/* SVG Connection Lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
-              <g style={{ transform: 'translate(50%, 50%)' }}>
-                {SKILLS.map((skill) => {
-                  if (!skill.parentId) return null;
-                  const start = nodePositions[skill.parentId];
-                  const end = nodePositions[skill.id];
-                  const colors = CATEGORY_COLORS[skill.category];
+          {/* ref container — SVG and nodes share this exact bounding box */}
+          <div ref={containerRef} className="relative w-full h-full max-w-4xl">
 
-                  return (
-                    <motion.line
-                      key={`${skill.parentId}-${skill.id}`}
-                      x1={start.x} y1={start.y}
-                      x2={end.x}   y2={end.y}
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      whileInView={{ pathLength: 1, opacity: 0.35 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5, delay: skill.level * 0.1 }}
-                      stroke={colors.lineHex}
-                      strokeWidth="2"
-                    />
-                  );
-                })}
-              </g>
-            </svg>
+            {/* SVG lines — origin measured from containerRef so it matches node CSS center */}
+            {svgCenter.x > 0 && (
+              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+                <g transform={`translate(${svgCenter.x}, ${svgCenter.y})`}>
+                  {SKILLS.map((skill) => {
+                    if (!skill.parentId) return null;
+                    const start = nodePositions[skill.parentId];
+                    const end = nodePositions[skill.id];
+                    const colors = CATEGORY_COLORS[skill.category];
+                    return (
+                      <motion.line
+                        key={`${skill.parentId}-${skill.id}`}
+                        x1={start.x} y1={start.y}
+                        x2={end.x}   y2={end.y}
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        whileInView={{ pathLength: 1, opacity: 0.4 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, delay: skill.level * 0.1 }}
+                        stroke={colors.lineHex}
+                        strokeWidth="2"
+                      />
+                    );
+                  })}
+                </g>
+              </svg>
+            )}
 
-            {/* Nodes */}
+            {/* Nodes — absolutely centered inside the same containerRef */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative w-0 h-0">
                 {SKILLS.map((skill) => {
@@ -188,22 +208,6 @@ const SkillTree = () => {
 
           </div>
         </div>
-      </div>
-
-      {/* Legend */}
-      <div className="max-w-4xl mx-auto px-4 mt-8 flex flex-wrap justify-center gap-8 relative z-10">
-        {[
-          { name: 'Core',    color: 'bg-indigo-500' },
-          { name: 'Engine',  color: 'bg-blue-500' },
-          { name: 'Design',  color: 'bg-rose-500' },
-          { name: 'Systems', color: 'bg-amber-500' },
-          { name: 'Tools',   color: 'bg-emerald-500' },
-        ].map((cat) => (
-          <div key={cat.name} className="flex items-center gap-3">
-            <div className={`w-3 h-3 rounded-full ${cat.color} shadow-[0_0_10px_rgba(0,0,0,0.5)] ring-1 ring-white/10`} />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 italic">{cat.name}</span>
-          </div>
-        ))}
       </div>
     </section>
   );
