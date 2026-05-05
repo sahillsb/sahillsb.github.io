@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Gamepad2, Github, Linkedin } from 'lucide-react';
+import { Menu, X, Gamepad2, Code2, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // ── UPDATE THESE with your real URLs ──────────────────────────────────────────
@@ -61,7 +61,7 @@ const Navbar = () => {
                 aria-label="GitHub"
                 className="text-slate-500 hover:text-white transition-colors"
               >
-                <Github size={18} />
+                <Code2 size={18} />
               </a>
               <a
                 href={LINKEDIN_URL}
@@ -70,7 +70,7 @@ const Navbar = () => {
                 aria-label="LinkedIn"
                 className="text-slate-500 hover:text-white transition-colors"
               >
-                <Linkedin size={18} />
+                <Globe size={18} />
               </a>
               <div className="h-4 w-[1px] bg-slate-800" />
               <a
@@ -131,7 +131,7 @@ const Navbar = () => {
                 aria-label="LinkedIn"
                 className="hover:text-white transition-colors"
               >
-                <Linkedin size={20} />
+                <Globe size={20} />
               </a>
               <a
                 href={RESUME_URL}

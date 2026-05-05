@@ -1,4 +1,4 @@
-import { Heart, Mail, Github, Linkedin } from 'lucide-react';
+import { Heart, Mail, Code2, Globe } from 'lucide-react';
 
 // ── UPDATE THESE with your real links ─────────────────────────────────────────
 const EMAIL = 'sahilbapardekar01@gmail.com';
@@ -46,7 +46,7 @@ const Footer = () => {
               aria-label="GitHub"
               className="hover:text-indigo-400 transition-colors"
             >
-              <Github size={18} />
+              <Code2 size={18} />
             </a>
             <a
               href={LINKEDIN_URL}
@@ -55,7 +55,7 @@ const Footer = () => {
               aria-label="LinkedIn"
               className="hover:text-indigo-400 transition-colors"
             >
-              <Linkedin size={18} />
+              <Globe size={18} />
             </a>
           </div>
         </div>
