@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent content jump when scrollbar appears */
+html {
+  overflow-y: scroll;
+}
