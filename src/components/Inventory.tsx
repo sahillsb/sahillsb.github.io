@@ -64,7 +64,7 @@ const rarityColors = {
 
 const Inventory = () => {
   return (
-    <section className="py-24 bg-slate-950">
+    <section className="py-24 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <div className="inline-block px-3 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-indigo-500/20">

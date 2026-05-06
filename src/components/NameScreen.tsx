@@ -25,7 +25,7 @@ const NameScreen = () => {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center bg-slate-950 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
 
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none">

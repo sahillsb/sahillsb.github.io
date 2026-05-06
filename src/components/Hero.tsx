@@ -15,7 +15,7 @@ import {
 
 const Hero = () => {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 text-white py-20">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden text-white py-20 z-10">
       {/* Background */}
       <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-indigo-900/20 rounded-full blur-[180px] animate-pulse" />

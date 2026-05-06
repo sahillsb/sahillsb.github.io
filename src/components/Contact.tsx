@@ -36,7 +36,7 @@ const channels = [
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-24 bg-slate-950 text-white overflow-hidden relative">
+    <section id="contact" className="py-24 text-white overflow-hidden relative z-10">
       {/* Background flare */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-500/8 rounded-full blur-[120px] pointer-events-none" />
 

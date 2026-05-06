@@ -173,7 +173,7 @@ const Projects = () => {
   const [modal, setModal] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="py-24 bg-slate-950 text-white">
+    <section id="projects" className="py-24 text-white relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
