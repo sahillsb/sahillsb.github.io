@@ -4,17 +4,6 @@ import { ChevronDown } from 'lucide-react';
 
 const ROLES = ['Game Designer', 'Level Designer', 'Systems Thinker', 'World Builder'];
 
-const PARTICLES = [
-  { x: 8,  y: 12, dur: 4.0, del: 0.0 }, { x: 92, y: 25, dur: 5.2, del: 0.4 },
-  { x: 15, y: 75, dur: 3.8, del: 1.1 }, { x: 78, y: 55, dur: 4.6, del: 0.7 },
-  { x: 42, y: 33, dur: 3.5, del: 1.8 }, { x: 60, y: 82, dur: 5.0, del: 0.2 },
-  { x: 85, y: 18, dur: 4.2, del: 1.5 }, { x: 25, y: 90, dur: 3.9, del: 2.1 },
-  { x: 55, y: 48, dur: 4.8, del: 0.9 }, { x: 70, y: 38, dur: 3.6, del: 1.3 },
-  { x: 30, y: 60, dur: 5.3, del: 0.5 }, { x: 88, y: 70, dur: 4.1, del: 1.9 },
-  { x: 48, y: 15, dur: 3.7, del: 0.8 }, { x: 12, y: 42, dur: 4.9, del: 2.4 },
-  { x: 95, y: 85, dur: 4.4, del: 1.2 }, { x: 38, y: 95, dur: 3.4, del: 0.3 },
-  { x: 65, y: 22, dur: 5.1, del: 1.7 }, { x: 20, y: 55, dur: 4.3, del: 0.6 },
-];
 
 const NameScreen = () => {
   const [roleIdx, setRoleIdx] = useState(0);
@@ -26,37 +15,6 @@ const NameScreen = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
-
-      {/* Animated background */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Drifting gradient blobs */}
-        <div
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/12 rounded-full blur-[130px]"
-          style={{ animation: 'drift 14s ease-in-out infinite' }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-600/12 rounded-full blur-[110px]"
-          style={{ animation: 'drift 18s ease-in-out infinite reverse', animationDelay: '4s' }}
-        />
-        <div
-          className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-blue-600/8 rounded-full blur-[90px]"
-          style={{ animation: 'drift 11s ease-in-out infinite', animationDelay: '7s' }}
-        />
-        {/* Dot grid */}
-        <div className="absolute inset-0 bg-[radial-gradient(#1e1b4b_1px,transparent_1px)] [background-size:48px_48px] opacity-25" />
-        {/* Floating particles */}
-        {PARTICLES.map((p, i) => (
-          <div
-            key={i}
-            className="absolute w-[3px] h-[3px] rounded-full bg-indigo-400/50"
-            style={{
-              left: `${p.x}%`,
-              top: `${p.y}%`,
-              animation: `floatParticle ${p.dur}s ${p.del}s ease-in-out infinite alternate`,
-            }}
-          />
-        ))}
-      </div>
 
       {/* Main content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
