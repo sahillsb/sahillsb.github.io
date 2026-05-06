@@ -38,7 +38,7 @@ const quests = [
 
 const QuestLog = () => {
   return (
-    <section id="about" className="py-24 bg-slate-900">
+    <section id="journey" className="py-24 bg-slate-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-16">
           <div className="flex items-center gap-4 mb-4">
