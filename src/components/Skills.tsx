@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Gamepad2, Code2, Layers, PenTool, Zap,
@@ -6,222 +6,274 @@ import {
   Sword, Shield, Star, LucideIcon,
 } from 'lucide-react';
 
-// ── Fixed canvas — BOTH svg lines and DOM nodes use these exact constants ─────
-const W  = 900;   // canvas width  (SVG and DOM share this)
-const H  = 700;   // canvas height
-const CX = W / 2; // 450 — horizontal center
-const CY = H / 2; // 350 — vertical center
+// ── All positions are hardcoded SVG coordinates ───────────────────────────────
+// viewBox 0 0 900 720  |  centre (450, 360)
+// Four branches at 0° / 90° / 180° / 270°, perfectly mirrored.
+// No runtime DOM measurement → no alignment drift, ever.
+// ─────────────────────────────────────────────────────────────────────────────
 
-interface SkillNode {
-  id: string; label: string; Icon: LucideIcon;
-  category: 'core'|'engine'|'tools'|'design'|'systems';
-  level: 0|1|2|3; angle: number; distance: number; description: string;
-  parentId?: string;
+interface N {
+  id: string; label: string; desc: string;
+  Icon: LucideIcon; cat: Cat;
+  lv: 0|1|2|3;
+  x: number; y: number; r: number;
+  pid?: string;
 }
+type Cat = 'core'|'engine'|'tools'|'design'|'systems';
 
-// Balanced 4-branch layout: Engine↑  Tools→  Design↓  Systems←
-const SKILLS: SkillNode[] = [
-  { id:'core', label:'SAHIL.GD', Icon:Gamepad2, category:'core', level:0, angle:0,   distance:0,   description:'Game Designer · 3 yrs · 4 shipped titles' },
-  // Engine (top, 0°)
-  { id:'eng',       label:'Engines',   Icon:Box,     category:'engine', level:1, angle:0,   distance:130, parentId:'core', description:'Game engine expertise' },
-  { id:'unity',     label:'Unity 3D',  Icon:Box,     category:'engine', level:2, angle:340, distance:240, parentId:'eng',  description:'Primary engine · 4 shipped titles' },
-  { id:'unreal',    label:'Unreal 5',  Icon:Monitor, category:'engine', level:2, angle:20,  distance:240, parentId:'eng',  description:'High-fidelity worlds & VFX' },
-  { id:'csharp',    label:'C#',        Icon:Code2,   category:'engine', level:3, angle:330, distance:350, parentId:'unity',   description:'Gameplay scripting & tools' },
-  { id:'blueprint', label:'Blueprint', Icon:Zap,     category:'engine', level:3, angle:30,  distance:350, parentId:'unreal',  description:'Visual scripting in UE5' },
-  // Tools (right, 90°)
-  { id:'tools', label:'Tools',       Icon:Cpu,     category:'tools', level:1, angle:90,  distance:130, parentId:'core',  description:'Daily production software' },
-  { id:'maya',  label:'Maya',        Icon:Box,     category:'tools', level:2, angle:70,  distance:240, parentId:'tools', description:'3D modeling & animation' },
-  { id:'adobe', label:'Adobe Suite', Icon:Star,    category:'tools', level:2, angle:90,  distance:255, parentId:'tools', description:'Photoshop · Illustrator · Premiere' },
-  { id:'figma', label:'Figma',       Icon:PenTool, category:'tools', level:2, angle:110, distance:240, parentId:'tools', description:'UI wireframing & handoff' },
-  // Design (bottom, 180°)
-  { id:'design', label:'Design',       Icon:PenTool, category:'design', level:1, angle:180, distance:130, parentId:'core',   description:'Creative & UX craft' },
-  { id:'level',  label:'Level Design', Icon:Sword,   category:'design', level:2, angle:160, distance:240, parentId:'design', description:'Spatial flow & encounter design' },
-  { id:'uiux',   label:'UI/UX',        Icon:Monitor, category:'design', level:2, angle:180, distance:255, parentId:'design', description:'Player interfaces & UX flows' },
-  { id:'art',    label:'Art Style',    Icon:Layers,  category:'design', level:2, angle:200, distance:240, parentId:'design', description:'Visual direction & asset direction' },
-  // Systems (left, 270°)
-  { id:'sys',     label:'Systems',    Icon:Zap,      category:'systems', level:1, angle:270, distance:130, parentId:'core', description:'Technical systems knowledge' },
-  { id:'physics', label:'Physics',    Icon:Shield,   category:'systems', level:2, angle:250, distance:240, parentId:'sys',  description:'Unity physics & collision' },
-  { id:'backend', label:'Backend',    Icon:Database, category:'systems', level:2, angle:270, distance:255, parentId:'sys',  description:'Playfab · player data · live ops' },
-  { id:'network', label:'Networking', Icon:Globe,    category:'systems', level:2, angle:290, distance:240, parentId:'sys',  description:'Photon PUN · multiplayer' },
+const NODES: N[] = [
+  // ── Core ──────────────────────────────────────────────────────────────────
+  { id:'core',      label:'SAHIL.GD',    desc:'Game Designer · 3 yrs · 4 shipped',
+    Icon:Gamepad2,  cat:'core',    lv:0, x:450, y:360, r:42 },
+
+  // ── Engine  (top, y↑) ─────────────────────────────────────────────────────
+  { id:'eng',       label:'Engines',     desc:'Game engine expertise',
+    Icon:Box,       cat:'engine',  lv:1, x:450, y:228, r:28, pid:'core'      },
+  { id:'unity',     label:'Unity 3D',    desc:'Primary engine · 4 shipped titles',
+    Icon:Box,       cat:'engine',  lv:2, x:338, y:112, r:20, pid:'eng'       },
+  { id:'unreal',    label:'Unreal 5',    desc:'High-fidelity worlds & VFX',
+    Icon:Monitor,   cat:'engine',  lv:2, x:562, y:112, r:20, pid:'eng'       },
+  { id:'csharp',    label:'C#',          desc:'Gameplay scripting & tools',
+    Icon:Code2,     cat:'engine',  lv:3, x:258, y:48,  r:15, pid:'unity'     },
+  { id:'blueprint', label:'Blueprint',   desc:'Visual scripting in UE5',
+    Icon:Zap,       cat:'engine',  lv:3, x:642, y:48,  r:15, pid:'unreal'    },
+
+  // ── Tools  (right, x→) ───────────────────────────────────────────────────
+  { id:'tools',     label:'Tools',       desc:'Daily production software',
+    Icon:Cpu,       cat:'tools',   lv:1, x:582, y:360, r:28, pid:'core'      },
+  { id:'maya',      label:'Maya',        desc:'3D modeling & animation',
+    Icon:Box,       cat:'tools',   lv:2, x:712, y:255, r:20, pid:'tools'     },
+  { id:'adobe',     label:'Adobe Suite', desc:'Photoshop · Illustrator · Premiere',
+    Icon:Star,      cat:'tools',   lv:2, x:742, y:360, r:20, pid:'tools'     },
+  { id:'figma',     label:'Figma',       desc:'UI wireframing & handoff',
+    Icon:PenTool,   cat:'tools',   lv:2, x:712, y:465, r:20, pid:'tools'     },
+
+  // ── Design  (bottom, y↓) ─────────────────────────────────────────────────
+  { id:'design',    label:'Design',      desc:'Creative & UX craft',
+    Icon:PenTool,   cat:'design',  lv:1, x:450, y:492, r:28, pid:'core'      },
+  { id:'level',     label:'Level Design',desc:'Spatial flow & encounter design',
+    Icon:Sword,     cat:'design',  lv:2, x:338, y:608, r:20, pid:'design'    },
+  { id:'uiux',      label:'UI / UX',     desc:'Player interfaces & UX flows',
+    Icon:Monitor,   cat:'design',  lv:2, x:450, y:648, r:20, pid:'design'    },
+  { id:'art',       label:'Art Style',   desc:'Visual direction & asset pipeline',
+    Icon:Layers,    cat:'design',  lv:2, x:562, y:608, r:20, pid:'design'    },
+
+  // ── Systems  (left, x←) ──────────────────────────────────────────────────
+  { id:'sys',       label:'Systems',     desc:'Technical systems knowledge',
+    Icon:Zap,       cat:'systems', lv:1, x:318, y:360, r:28, pid:'core'      },
+  { id:'physics',   label:'Physics',     desc:'Unity physics & collision',
+    Icon:Shield,    cat:'systems', lv:2, x:188, y:255, r:20, pid:'sys'       },
+  { id:'backend',   label:'Backend',     desc:'Playfab · player data · live ops',
+    Icon:Database,  cat:'systems', lv:2, x:158, y:360, r:20, pid:'sys'       },
+  { id:'network',   label:'Networking',  desc:'Photon PUN · multiplayer',
+    Icon:Globe,     cat:'systems', lv:2, x:188, y:465, r:20, pid:'sys'       },
 ];
 
-const COL: Record<string, { border:string; text:string; line:string; glow:string }> = {
-  engine:  { border:'#3b82f6', text:'#60a5fa', line:'#3b82f6', glow:'rgba(59,130,246,0.35)'  },
-  tools:   { border:'#10b981', text:'#34d399', line:'#10b981', glow:'rgba(16,185,129,0.35)'  },
-  design:  { border:'#f43f5e', text:'#fb7185', line:'#f43f5e', glow:'rgba(244,63,94,0.35)'   },
-  systems: { border:'#f59e0b', text:'#fbbf24', line:'#f59e0b', glow:'rgba(245,158,11,0.35)'  },
-  core:    { border:'#6366f1', text:'#818cf8', line:'#6366f1', glow:'rgba(99,102,241,0.4)'   },
+const MAP = Object.fromEntries(NODES.map(n => [n.id, n]));
+
+const C: Record<Cat, { border:string; text:string; glow:string; line:string }> = {
+  core:    { border:'#6366f1', text:'#a5b4fc', glow:'rgba(99,102,241,0.6)',   line:'#6366f1' },
+  engine:  { border:'#3b82f6', text:'#93c5fd', glow:'rgba(59,130,246,0.45)',  line:'#3b82f6' },
+  tools:   { border:'#10b981', text:'#6ee7b7', glow:'rgba(16,185,129,0.45)',  line:'#10b981' },
+  design:  { border:'#f43f5e', text:'#fda4af', glow:'rgba(244,63,94,0.45)',   line:'#f43f5e' },
+  systems: { border:'#f59e0b', text:'#fcd34d', glow:'rgba(245,158,11,0.45)',  line:'#f59e0b' },
 };
 
-// Diameter per level (px, in canvas space)
-const DIAM = { 0:80, 1:56, 2:40, 3:32 } as const;
-const ICON = { 0:28, 1:18, 2:14, 3:10 } as const;
+const ICON_S: Record<number, number> = { 0:30, 1:18, 2:14, 3:11 };
 
-const SkillTree = () => {
+// ── Component ─────────────────────────────────────────────────────────────────
+export default function SkillTree() {
   const [hov, setHov] = useState<string|null>(null);
-  const [scale, setScale]   = useState(1);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  // Responsive scale: shrink canvas on narrow viewports
-  useEffect(() => {
-    const upd = () => {
-      const parent = wrapRef.current?.parentElement;
-      if (parent) setScale(Math.min(1, (parent.offsetWidth - 32) / W));
-    };
-    upd();
-    window.addEventListener('resize', upd);
-    return () => window.removeEventListener('resize', upd);
-  }, []);
-
-  // Node positions — all relative to (0,0) origin
-  const pos = useMemo(() => SKILLS.reduce((acc, s) => {
-    const r = (s.angle - 90) * (Math.PI / 180);
-    acc[s.id] = { x: s.distance * Math.cos(r), y: s.distance * Math.sin(r) };
-    return acc;
-  }, {} as Record<string, {x:number;y:number}>), []);
 
   return (
     <section id="skills" className="py-24 relative z-10">
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 text-center mb-16">
+      <div className="max-w-7xl mx-auto px-4 text-center mb-10">
         <div className="inline-block px-3 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-indigo-500/20">
           Passive Ability Tree
         </div>
         <h2 className="text-4xl md:text-5xl font-black uppercase italic text-white">
           Skill <span className="text-indigo-500">Tree</span>
         </h2>
-        <p className="text-slate-500 text-sm uppercase tracking-widest mt-4 italic">
-          Hover a node to inspect · Level 37 Designer
+        <p className="text-slate-500 text-sm uppercase tracking-widest mt-3 italic">
+          Hover to inspect · Level 37 Designer
         </p>
       </div>
 
-      {/* ── Canvas wrapper ─────────────────────────────────────────────────────
-          wrapRef width = W*scale → centers the scaled canvas in the section.
-          Inner canvas = fixed W×H → same coordinate space for svg AND dom.
-      ───────────────────────────────────────────────────────────────────────── */}
-      <div
-        ref={wrapRef}
-        style={{ width: W * scale, height: H * scale, margin: '0 auto', position: 'relative' }}
-      >
-        <div style={{
-          width: W, height: H,
-          position: 'absolute', top: 0, left: 0,
-          transform: `scale(${scale})`,
-          transformOrigin: 'top left',
-        }}>
-
-          {/* SVG lines — x = CX + pos.x,  y = CY + pos.y */}
-          <svg
-            width={W} height={H}
-            style={{ position:'absolute', inset:0, overflow:'visible', pointerEvents:'none' }}
-          >
-            {SKILLS.map(s => {
-              if (!s.parentId) return null;
-              const p = pos[s.parentId], e = pos[s.id];
+      {/* ── Pure SVG ── viewBox locks every coord; nothing can drift ─────────── */}
+      <div className="max-w-4xl mx-auto px-4">
+        <svg
+          viewBox="0 0 900 720"
+          preserveAspectRatio="xMidYMid meet"
+          style={{ width:'100%', height:'auto', overflow:'visible' }}
+          aria-label="Skill tree"
+        >
+          <defs>
+            {/* Gradient per connection (parent colour → child colour) */}
+            {NODES.map(n => {
+              if (!n.pid) return null;
+              const p = MAP[n.pid];
               return (
-                <motion.line
-                  key={`${s.parentId}-${s.id}`}
-                  x1={CX + p.x} y1={CY + p.y}
-                  x2={CX + e.x} y2={CY + e.y}
-                  stroke={COL[s.category].line}
-                  strokeWidth={s.level === 1 ? 1.5 : 1}
-                  initial={{ opacity:0 }}
-                  whileInView={{ opacity: s.level === 1 ? 0.5 : 0.35 }}
-                  viewport={{ once:true }}
-                  transition={{ duration:1, delay: s.level * 0.12 }}
-                />
+                <linearGradient
+                  key={`lg-${n.id}`} id={`lg-${n.id}`}
+                  gradientUnits="userSpaceOnUse"
+                  x1={p.x} y1={p.y} x2={n.x} y2={n.y}
+                >
+                  <stop offset="0%"   stopColor={C[p.cat].line} stopOpacity="0.7" />
+                  <stop offset="100%" stopColor={C[n.cat].line} stopOpacity="0.4" />
+                </linearGradient>
               );
             })}
-          </svg>
+          </defs>
 
-          {/* DOM nodes — position: absolute, left = CX + pos.x, top = CY + pos.y */}
-          {SKILLS.map(s => {
-            const p    = pos[s.id];
-            const col  = COL[s.category];
-            const isH  = hov === s.id;
-            const isC  = s.level === 0;
-            const d    = DIAM[s.level];
-            const ic   = ICON[s.level];
-
-            const border = isH ? col.border : isC ? '#6366f1' : '#1e293b';
-            const shadow = isH ? `0 0 22px ${col.glow}` : isC ? '0 0 20px rgba(99,102,241,0.4)' : 'none';
-            const iconClr = isH ? col.text : isC ? '#818cf8' : '#475569';
-            const lblClr  = isH ? col.text : isC ? '#818cf8' : '#475569';
-
+          {/* ── Lines ─────────────────────────────────────────────────────── */}
+          {NODES.map(n => {
+            if (!n.pid) return null;
+            const p = MAP[n.pid];
             return (
-              <motion.div
-                key={s.id}
-                style={{ position:'absolute', left: CX + p.x, top: CY + p.y, transform:'translate(-50%,-50%)', zIndex: isH ? 30 : 10 }}
-                initial={{ scale:0, opacity:0 }}
-                whileInView={{ scale:1, opacity:1 }}
+              <motion.line
+                key={`l-${n.id}`}
+                x1={p.x} y1={p.y} x2={n.x} y2={n.y}
+                stroke={`url(#lg-${n.id})`}
+                strokeWidth={n.lv === 1 ? 1.8 : 1.2}
+                strokeLinecap="round"
+                initial={{ opacity:0, pathLength:0 }}
+                whileInView={{ opacity:1, pathLength:1 }}
                 viewport={{ once:true }}
-                transition={{ type:'spring', stiffness:260, damping:22, delay: s.level * 0.1 }}
-                onMouseEnter={() => setHov(s.id)}
-                onMouseLeave={() => setHov(null)}
-              >
-                {/* Circle */}
-                <div
-                  style={{
-                    width: d, height: d,
-                    borderRadius: '50%',
-                    border: `2px solid ${border}`,
-                    boxShadow: shadow,
-                    background: '#0f172a',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'border-color .25s, box-shadow .25s',
-                    transform: isH ? 'scale(1.2)' : 'scale(1)',
-                  }}
-                  className={isC ? 'animate-[pulse_3s_infinite]' : ''}
-                >
-                  <s.Icon size={ic} color={iconClr} style={{ transition:'color .25s' }} />
-                </div>
-
-                {/* Label + tooltip */}
-                <div style={{
-                  position:'absolute', top:'100%', left:'50%',
-                  transform:'translateX(-50%)', marginTop: 8,
-                  textAlign:'center', pointerEvents:'none', width:'max-content', maxWidth: 90,
-                }}>
-                  <p style={{
-                    fontSize: 7, fontWeight:900, textTransform:'uppercase',
-                    letterSpacing:'0.1em', color: lblClr, transition:'color .25s',
-                  }}>
-                    {s.label}
-                  </p>
-
-                  <AnimatePresence>
-                    {isH && (
-                      <motion.div
-                        initial={{ opacity:0, y:4 }}
-                        animate={{ opacity:1, y:0 }}
-                        exit={{ opacity:0 }}
-                        transition={{ duration:.15 }}
-                        style={{
-                          marginTop:4,
-                          background:'rgba(15,23,42,0.95)',
-                          border:'1px solid #334155',
-                          borderRadius:2,
-                          padding:'4px 6px',
-                          whiteSpace:'normal',
-                          maxWidth: 110,
-                        }}
-                      >
-                        <p style={{ fontSize:7.5, color:'#94a3b8', lineHeight:1.4 }}>
-                          {s.description}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
+                transition={{ duration:0.9, delay: n.lv * 0.12, ease:'easeOut' }}
+              />
             );
           })}
 
-        </div>
+          {/* ── Nodes ─────────────────────────────────────────────────────── */}
+          {NODES.map(n => {
+            const col   = C[n.cat];
+            const isH   = hov === n.id;
+            const isC   = n.lv === 0;
+            const fo    = n.r - (isC ? 8 : 5);   // foreignObject half-size
+
+            return (
+              <motion.g
+                key={n.id}
+                style={{ transformBox:'fill-box', transformOrigin:'center', cursor:'pointer' }}
+                initial={{ opacity:0, scale:0 }}
+                whileInView={{ opacity:1, scale:1 }}
+                viewport={{ once:true }}
+                transition={{ type:'spring', stiffness:220, damping:22, delay: n.lv * 0.09 }}
+                onMouseEnter={() => setHov(n.id)}
+                onMouseLeave={() => setHov(null)}
+              >
+                {/* Outer pulse ring — core always on, others on hover */}
+                {(isC || isH) && (
+                  <motion.circle
+                    cx={n.x} cy={n.y} r={n.r + (isC ? 8 : 6)}
+                    fill="none"
+                    stroke={col.border}
+                    strokeWidth="1"
+                    animate={isC
+                      ? { opacity:[0.25,0.55,0.25], r:[n.r+6, n.r+11, n.r+6] }
+                      : { opacity:[0.4, 0.7, 0.4] }}
+                    transition={{ duration:2.5, repeat:Infinity, ease:'easeInOut' }}
+                  />
+                )}
+
+                {/* Node circle */}
+                <circle
+                  cx={n.x} cy={n.y} r={n.r}
+                  fill={isH ? '#0f172a' : '#0a0f1e'}
+                  stroke={isH ? col.border : isC ? '#6366f1' : '#1e293b'}
+                  strokeWidth={isH || isC ? 2 : 1.5}
+                  style={{
+                    filter: isH
+                      ? `drop-shadow(0 0 12px ${col.glow})`
+                      : isC
+                      ? 'drop-shadow(0 0 16px rgba(99,102,241,0.55))'
+                      : 'none',
+                  }}
+                />
+
+                {/* Inner ring detail */}
+                <circle
+                  cx={n.x} cy={n.y} r={n.r - 5}
+                  fill="none"
+                  stroke={isH ? col.border : '#1e293b'}
+                  strokeWidth="0.5"
+                  opacity={isH ? 0.4 : 0.2}
+                />
+
+                {/* Icon via foreignObject */}
+                <foreignObject
+                  x={n.x - fo} y={n.y - fo}
+                  width={fo * 2} height={fo * 2}
+                  style={{ overflow:'visible', pointerEvents:'none' }}
+                >
+                  <div style={{
+                    width:'100%', height:'100%',
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                  }}>
+                    <n.Icon
+                      size={ICON_S[n.lv]}
+                      color={isH ? col.text : isC ? '#818cf8' : '#334155'}
+                      style={{ transition:'color .2s' }}
+                    />
+                  </div>
+                </foreignObject>
+
+                {/* Label */}
+                <text
+                  x={n.x} y={n.y + n.r + 14}
+                  textAnchor="middle"
+                  fontSize="7"
+                  fontWeight="800"
+                  letterSpacing="0.8"
+                  fill={isH ? col.text : isC ? '#818cf8' : '#374151'}
+                  style={{ transition:'fill .2s', fontFamily:'inherit' }}
+                >
+                  {n.label.toUpperCase()}
+                </text>
+              </motion.g>
+            );
+          })}
+
+          {/* ── Tooltips — rendered last so they sit on top ────────────────── */}
+          <AnimatePresence>
+            {hov && (() => {
+              const n   = MAP[hov];
+              const col = C[n.cat];
+              const tw  = 148;
+              const th  = 24;
+              const tx  = n.x - tw / 2;
+              const ty  = n.y + n.r + 20;
+              return (
+                <motion.g
+                  key={`tt-${hov}`}
+                  initial={{ opacity:0, y:-4 }}
+                  animate={{ opacity:1, y:0 }}
+                  exit={{ opacity:0 }}
+                  transition={{ duration:.15 }}
+                  style={{ pointerEvents:'none' }}
+                >
+                  <rect
+                    x={tx} y={ty} width={tw} height={th} rx={3}
+                    fill="#0f172a" stroke={col.border}
+                    strokeWidth="0.8" opacity="0.97"
+                  />
+                  <text
+                    x={n.x} y={ty + th / 2 + 2.5}
+                    textAnchor="middle"
+                    fontSize="7"
+                    fill="#94a3b8"
+                    style={{ fontFamily:'inherit' }}
+                  >
+                    {n.desc}
+                  </text>
+                </motion.g>
+              );
+            })()}
+          </AnimatePresence>
+        </svg>
       </div>
     </section>
   );
-};
-
-export default SkillTree;
+}
