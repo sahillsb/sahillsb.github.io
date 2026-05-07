@@ -34,10 +34,17 @@ const NameScreen = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.9, ease: 'easeOut' }}
         >
-          <h1 className="text-[13vw] md:text-[10rem] font-black uppercase tracking-tighter text-white leading-[0.85] mb-6">
+          {/* clamp() prevents overflow on any screen — Hidrom/Bebas are condensed so these sizes fit */}
+          <h1
+            className="font-black uppercase text-white leading-[0.9] mb-4 w-full"
+            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 18vw, 11rem)', letterSpacing: '-0.01em' }}
+          >
             Sahil
           </h1>
-          <h1 className="text-[13vw] md:text-[10rem] font-black uppercase italic tracking-tighter leading-[0.85] mb-10">
+          <h1
+            className="font-black uppercase italic leading-[0.9] mb-10 w-full"
+            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 8.2vw, 6.5rem)', letterSpacing: '-0.01em' }}
+          >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
               Bapardekar
             </span>
