@@ -1,4 +1,5 @@
 import Background  from './components/Background';
+import Shapes      from './components/Shapes';
 import Cursor      from './components/Cursor';
 import Navbar      from './components/Navbar';
 import NameScreen  from './components/NameScreen';
@@ -16,6 +17,7 @@ function App() {
     // bg-slate-950 on root so the fixed Background shows through all sections
     <div className="min-h-screen text-gray-100 selection:bg-indigo-500 selection:text-white relative">
       <Background />
+      <Shapes />
       <Cursor />
       <Navbar />
       <main>

@@ -25,6 +25,18 @@ html {
   overflow-y: scroll;
 }
 
+/* ── Floating geometric shapes ── */
+@keyframes shapeFloat {
+  0%,100% { transform: translate(0px,   0px);  }
+  25%     { transform: translate(7px,  -18px); }
+  50%     { transform: translate(-5px,  -9px); }
+  75%     { transform: translate(-9px, -22px); }
+}
+@keyframes shapeRotate {
+  0%   { transform: rotate(0deg);   }
+  100% { transform: rotate(360deg); }
+}
+
 /* ── Text glitch / chromatic aberration ── */
 @keyframes glitch-r {
   0%,38%,100%  { clip-path:inset(0 0 100% 0); opacity:0; transform:translate(0); }
