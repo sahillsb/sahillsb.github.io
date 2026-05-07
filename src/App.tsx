@@ -1,4 +1,5 @@
 import Background  from './components/Background';
+import Cursor      from './components/Cursor';
 import Navbar      from './components/Navbar';
 import NameScreen  from './components/NameScreen';
 import Hero        from './components/Hero';
@@ -14,7 +15,8 @@ function App() {
   return (
     // bg-slate-950 on root so the fixed Background shows through all sections
     <div className="min-h-screen text-gray-100 selection:bg-indigo-500 selection:text-white relative">
-      <Background />   {/* fixed full-site stars, shooting stars, blobs — z-0 */}
+      <Background />
+      <Cursor />
       <Navbar />
       <main>
         <NameScreen />

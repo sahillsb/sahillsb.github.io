@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import VoidCanvas from './VoidCanvas';
 
 const ROLES = ['Game Designer', 'Level Designer', 'Systems Thinker', 'World Builder'];
-
 
 const NameScreen = () => {
   const [roleIdx, setRoleIdx] = useState(0);
@@ -15,6 +15,11 @@ const NameScreen = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
+
+      {/* Void — black hole sits behind all text */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <VoidCanvas />
+      </div>
 
       {/* Main content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">

@@ -24,3 +24,8 @@ html {
   scroll-behavior: smooth;
   overflow-y: scroll;
 }
+
+/* Hide native cursor on pointer devices so the custom one shows */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+}
