@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Gamepad2, Code2, Globe } from 'lucide-react';
+import { Menu, X, Gamepad2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { GithubIcon, LinkedinIcon } from './icons';
 
 // ── UPDATE THESE with your real URLs ──────────────────────────────────────────
 const RESUME_URL  = '/resume.pdf';
@@ -72,7 +73,7 @@ const Navbar = () => {
                 aria-label="GitHub"
                 className="text-slate-500 hover:text-white transition-colors"
               >
-                <Code2 size={17} />
+                <GithubIcon size={17} />
               </a>
               <a
                 href={LINKEDIN_URL}
@@ -81,7 +82,7 @@ const Navbar = () => {
                 aria-label="LinkedIn"
                 className="text-slate-500 hover:text-white transition-colors"
               >
-                <Globe size={17} />
+                <LinkedinIcon size={17} />
               </a>
               <div className="h-4 w-px bg-slate-800" />
               {/* Resume: opens PDF in new tab (no download attr) */}
@@ -131,8 +132,8 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="pt-5 flex justify-center gap-6 text-slate-400">
-                <a href={GITHUB_URL}   target="_blank" rel="noopener noreferrer" aria-label="GitHub"   className="hover:text-white transition-colors"><Code2 size={20} /></a>
-                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white transition-colors"><Globe size={20} /></a>
+                <a href={GITHUB_URL}   target="_blank" rel="noopener noreferrer" aria-label="GitHub"   className="hover:text-white transition-colors"><GithubIcon size={20} /></a>
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white transition-colors"><LinkedinIcon size={20} /></a>
                 <a href={RESUME_URL}   target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-white text-xs font-black uppercase tracking-widest transition-colors">Resume</a>
               </div>
             </div>

@@ -6,67 +6,61 @@ import {
   Sword, Shield, Star, LucideIcon,
 } from 'lucide-react';
 
-// ── All positions are hardcoded SVG coordinates ───────────────────────────────
-// viewBox 0 0 900 720  |  centre (450, 360)
-// Four branches at 0° / 90° / 180° / 270°, perfectly mirrored.
-// No runtime DOM measurement → no alignment drift, ever.
-// ─────────────────────────────────────────────────────────────────────────────
+// ── All node positions are hardcoded SVG coords — zero drift possible ─────────
+// viewBox 0 0 900 720 · centre (450, 360)
+// Engine ↑  Tools →  Design ↓  Systems ← — all 3 leaf-nodes per branch
 
 interface N {
   id: string; label: string; desc: string;
   Icon: LucideIcon; cat: Cat;
-  lv: 0|1|2|3;
-  x: number; y: number; r: number;
-  pid?: string;
+  lv: 0|1|2; x: number; y: number; r: number; pid?: string;
 }
 type Cat = 'core'|'engine'|'tools'|'design'|'systems';
 
 const NODES: N[] = [
-  // ── Core ──────────────────────────────────────────────────────────────────
-  { id:'core',      label:'SAHIL.GD',    desc:'Game Designer · 3 yrs · 4 shipped',
-    Icon:Gamepad2,  cat:'core',    lv:0, x:450, y:360, r:42 },
+  // Core
+  { id:'core',    label:'SAHIL.GD',    desc:'Game Designer · 3 yrs · 4 shipped',
+    Icon:Gamepad2, cat:'core',    lv:0, x:450, y:360, r:42 },
 
-  // ── Engine  (top, y↑) ─────────────────────────────────────────────────────
-  { id:'eng',       label:'Engines',     desc:'Game engine expertise',
-    Icon:Box,       cat:'engine',  lv:1, x:450, y:228, r:28, pid:'core'      },
-  { id:'unity',     label:'Unity 3D',    desc:'Primary engine · 4 shipped titles',
-    Icon:Box,       cat:'engine',  lv:2, x:338, y:112, r:20, pid:'eng'       },
-  { id:'unreal',    label:'Unreal 5',    desc:'High-fidelity worlds & VFX',
-    Icon:Monitor,   cat:'engine',  lv:2, x:562, y:112, r:20, pid:'eng'       },
-  { id:'csharp',    label:'C#',          desc:'Gameplay scripting & tools',
-    Icon:Code2,     cat:'engine',  lv:3, x:258, y:48,  r:15, pid:'unity'     },
-  { id:'blueprint', label:'Blueprint',   desc:'Visual scripting in UE5',
-    Icon:Zap,       cat:'engine',  lv:3, x:642, y:48,  r:15, pid:'unreal'    },
+  // ── Engine (top) ── 3 symmetric leaf nodes off the root ──────────────────
+  { id:'eng',     label:'Engines',     desc:'Game engine expertise',
+    Icon:Box,      cat:'engine',  lv:1, x:450, y:225, r:28, pid:'core'   },
+  { id:'unity',   label:'Unity 3D',    desc:'Primary engine · 4 shipped titles',
+    Icon:Box,      cat:'engine',  lv:2, x:338, y:90,  r:20, pid:'eng'    },
+  { id:'csharp',  label:'C#',          desc:'Gameplay scripting & tools',
+    Icon:Code2,    cat:'engine',  lv:2, x:450, y:58,  r:20, pid:'eng'    },
+  { id:'unreal',  label:'Unreal 5',    desc:'High-fidelity worlds & VFX',
+    Icon:Monitor,  cat:'engine',  lv:2, x:562, y:90,  r:20, pid:'eng'    },
 
-  // ── Tools  (right, x→) ───────────────────────────────────────────────────
-  { id:'tools',     label:'Tools',       desc:'Daily production software',
-    Icon:Cpu,       cat:'tools',   lv:1, x:582, y:360, r:28, pid:'core'      },
-  { id:'maya',      label:'Maya',        desc:'3D modeling & animation',
-    Icon:Box,       cat:'tools',   lv:2, x:712, y:255, r:20, pid:'tools'     },
-  { id:'adobe',     label:'Adobe Suite', desc:'Photoshop · Illustrator · Premiere',
-    Icon:Star,      cat:'tools',   lv:2, x:742, y:360, r:20, pid:'tools'     },
-  { id:'figma',     label:'Figma',       desc:'UI wireframing & handoff',
-    Icon:PenTool,   cat:'tools',   lv:2, x:712, y:465, r:20, pid:'tools'     },
+  // ── Tools (right) ────────────────────────────────────────────────────────
+  { id:'tools',   label:'Tools',       desc:'Daily production software',
+    Icon:Cpu,      cat:'tools',   lv:1, x:582, y:360, r:28, pid:'core'   },
+  { id:'maya',    label:'Maya',        desc:'3D modeling & animation',
+    Icon:Box,      cat:'tools',   lv:2, x:712, y:255, r:20, pid:'tools'  },
+  { id:'adobe',   label:'Adobe Suite', desc:'Photoshop · Illustrator · Premiere',
+    Icon:Star,     cat:'tools',   lv:2, x:742, y:360, r:20, pid:'tools'  },
+  { id:'figma',   label:'Figma',       desc:'UI wireframing & handoff',
+    Icon:PenTool,  cat:'tools',   lv:2, x:712, y:465, r:20, pid:'tools'  },
 
-  // ── Design  (bottom, y↓) ─────────────────────────────────────────────────
-  { id:'design',    label:'Design',      desc:'Creative & UX craft',
-    Icon:PenTool,   cat:'design',  lv:1, x:450, y:492, r:28, pid:'core'      },
-  { id:'level',     label:'Level Design',desc:'Spatial flow & encounter design',
-    Icon:Sword,     cat:'design',  lv:2, x:338, y:608, r:20, pid:'design'    },
-  { id:'uiux',      label:'UI / UX',     desc:'Player interfaces & UX flows',
-    Icon:Monitor,   cat:'design',  lv:2, x:450, y:648, r:20, pid:'design'    },
-  { id:'art',       label:'Art Style',   desc:'Visual direction & asset pipeline',
-    Icon:Layers,    cat:'design',  lv:2, x:562, y:608, r:20, pid:'design'    },
+  // ── Design (bottom) ──────────────────────────────────────────────────────
+  { id:'design',  label:'Design',      desc:'Creative & UX craft',
+    Icon:PenTool,  cat:'design',  lv:1, x:450, y:495, r:28, pid:'core'   },
+  { id:'level',   label:'Level Design',desc:'Spatial flow & encounter design',
+    Icon:Sword,    cat:'design',  lv:2, x:338, y:612, r:20, pid:'design' },
+  { id:'uiux',    label:'UI / UX',     desc:'Player interfaces & UX flows',
+    Icon:Monitor,  cat:'design',  lv:2, x:450, y:652, r:20, pid:'design' },
+  { id:'art',     label:'Art Style',   desc:'Visual direction & asset pipeline',
+    Icon:Layers,   cat:'design',  lv:2, x:562, y:612, r:20, pid:'design' },
 
-  // ── Systems  (left, x←) ──────────────────────────────────────────────────
-  { id:'sys',       label:'Systems',     desc:'Technical systems knowledge',
-    Icon:Zap,       cat:'systems', lv:1, x:318, y:360, r:28, pid:'core'      },
-  { id:'physics',   label:'Physics',     desc:'Unity physics & collision',
-    Icon:Shield,    cat:'systems', lv:2, x:188, y:255, r:20, pid:'sys'       },
-  { id:'backend',   label:'Backend',     desc:'Playfab · player data · live ops',
-    Icon:Database,  cat:'systems', lv:2, x:158, y:360, r:20, pid:'sys'       },
-  { id:'network',   label:'Networking',  desc:'Photon PUN · multiplayer',
-    Icon:Globe,     cat:'systems', lv:2, x:188, y:465, r:20, pid:'sys'       },
+  // ── Systems (left) ───────────────────────────────────────────────────────
+  { id:'sys',     label:'Systems',     desc:'Technical systems knowledge',
+    Icon:Zap,      cat:'systems', lv:1, x:318, y:360, r:28, pid:'core'   },
+  { id:'physics', label:'Physics',     desc:'Unity physics & collision',
+    Icon:Shield,   cat:'systems', lv:2, x:188, y:255, r:20, pid:'sys'    },
+  { id:'backend', label:'Backend',     desc:'Playfab · player data · live ops',
+    Icon:Database, cat:'systems', lv:2, x:158, y:360, r:20, pid:'sys'    },
+  { id:'network', label:'Networking',  desc:'Photon PUN · multiplayer',
+    Icon:Globe,    cat:'systems', lv:2, x:188, y:465, r:20, pid:'sys'    },
 ];
 
 const MAP = Object.fromEntries(NODES.map(n => [n.id, n]));
@@ -79,11 +73,11 @@ const C: Record<Cat, { border:string; text:string; glow:string; line:string }> =
   systems: { border:'#f59e0b', text:'#fcd34d', glow:'rgba(245,158,11,0.45)',  line:'#f59e0b' },
 };
 
-const ICON_S: Record<number, number> = { 0:30, 1:18, 2:14, 3:11 };
+const ICON_S: Record<number, number> = { 0:30, 1:18, 2:14 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
 export default function SkillTree() {
-  const [hov, setHov] = useState<string|null>(null);
+  const [hov, setHov]     = useState<string|null>(null);
+  const [tip, setTip]     = useState({ x: 0, y: 0 });
 
   return (
     <section id="skills" className="py-24 relative z-10">
@@ -101,16 +95,14 @@ export default function SkillTree() {
         </p>
       </div>
 
-      {/* ── Pure SVG ── viewBox locks every coord; nothing can drift ─────────── */}
+      {/* SVG — pure coordinate space, no DOM/SVG mixing */}
       <div className="max-w-4xl mx-auto px-4">
         <svg
           viewBox="0 0 900 720"
           preserveAspectRatio="xMidYMid meet"
           style={{ width:'100%', height:'auto', overflow:'visible' }}
-          aria-label="Skill tree"
         >
           <defs>
-            {/* Gradient per connection (parent colour → child colour) */}
             {NODES.map(n => {
               if (!n.pid) return null;
               const p = MAP[n.pid];
@@ -120,14 +112,14 @@ export default function SkillTree() {
                   gradientUnits="userSpaceOnUse"
                   x1={p.x} y1={p.y} x2={n.x} y2={n.y}
                 >
-                  <stop offset="0%"   stopColor={C[p.cat].line} stopOpacity="0.7" />
-                  <stop offset="100%" stopColor={C[n.cat].line} stopOpacity="0.4" />
+                  <stop offset="0%"   stopColor={C[p.cat].line} stopOpacity="0.7"/>
+                  <stop offset="100%" stopColor={C[n.cat].line} stopOpacity="0.35"/>
                 </linearGradient>
               );
             })}
           </defs>
 
-          {/* ── Lines ─────────────────────────────────────────────────────── */}
+          {/* Lines */}
           {NODES.map(n => {
             if (!n.pid) return null;
             const p = MAP[n.pid];
@@ -138,20 +130,20 @@ export default function SkillTree() {
                 stroke={`url(#lg-${n.id})`}
                 strokeWidth={n.lv === 1 ? 1.8 : 1.2}
                 strokeLinecap="round"
-                initial={{ opacity:0, pathLength:0 }}
-                whileInView={{ opacity:1, pathLength:1 }}
+                initial={{ opacity:0 }}
+                whileInView={{ opacity:1 }}
                 viewport={{ once:true }}
-                transition={{ duration:0.9, delay: n.lv * 0.12, ease:'easeOut' }}
+                transition={{ duration:0.9, delay: n.lv * 0.12 }}
               />
             );
           })}
 
-          {/* ── Nodes ─────────────────────────────────────────────────────── */}
+          {/* Nodes */}
           {NODES.map(n => {
-            const col   = C[n.cat];
-            const isH   = hov === n.id;
-            const isC   = n.lv === 0;
-            const fo    = n.r - (isC ? 8 : 5);   // foreignObject half-size
+            const col  = C[n.cat];
+            const isH  = hov === n.id;
+            const isC  = n.lv === 0;
+            const fo   = n.r - (isC ? 8 : 5);
 
             return (
               <motion.g
@@ -160,120 +152,86 @@ export default function SkillTree() {
                 initial={{ opacity:0, scale:0 }}
                 whileInView={{ opacity:1, scale:1 }}
                 viewport={{ once:true }}
+                whileHover={{ scale: 1.3 }}
                 transition={{ type:'spring', stiffness:220, damping:22, delay: n.lv * 0.09 }}
-                onMouseEnter={() => setHov(n.id)}
+                onMouseEnter={(e) => {
+                  setHov(n.id);
+                  setTip({ x: e.clientX, y: e.clientY });
+                }}
+                onMouseMove={(e) => setTip({ x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHov(null)}
               >
-                {/* Outer pulse ring — core always on, others on hover */}
+                {/* Pulse ring — core always, others on hover */}
                 {(isC || isH) && (
                   <motion.circle
                     cx={n.x} cy={n.y} r={n.r + (isC ? 8 : 6)}
-                    fill="none"
-                    stroke={col.border}
-                    strokeWidth="1"
+                    fill="none" stroke={col.border} strokeWidth="1"
                     animate={isC
-                      ? { opacity:[0.25,0.55,0.25], r:[n.r+6, n.r+11, n.r+6] }
+                      ? { opacity:[0.2,0.5,0.2], r:[n.r+5, n.r+10, n.r+5] }
                       : { opacity:[0.4, 0.7, 0.4] }}
                     transition={{ duration:2.5, repeat:Infinity, ease:'easeInOut' }}
                   />
                 )}
 
-                {/* Node circle */}
-                <circle
-                  cx={n.x} cy={n.y} r={n.r}
-                  fill={isH ? '#0f172a' : '#0a0f1e'}
+                {/* Body */}
+                <circle cx={n.x} cy={n.y} r={n.r}
+                  fill={isH ? '#0f172a' : '#080d1a'}
                   stroke={isH ? col.border : isC ? '#6366f1' : '#1e293b'}
                   strokeWidth={isH || isC ? 2 : 1.5}
-                  style={{
-                    filter: isH
-                      ? `drop-shadow(0 0 12px ${col.glow})`
-                      : isC
-                      ? 'drop-shadow(0 0 16px rgba(99,102,241,0.55))'
-                      : 'none',
-                  }}
+                  style={{ filter: isH
+                    ? `drop-shadow(0 0 12px ${col.glow})`
+                    : isC ? 'drop-shadow(0 0 16px rgba(99,102,241,0.55))' : 'none' }}
                 />
+                <circle cx={n.x} cy={n.y} r={n.r - 5}
+                  fill="none" stroke={isH ? col.border : '#1e293b'}
+                  strokeWidth="0.5" opacity={isH ? 0.4 : 0.15} />
 
-                {/* Inner ring detail */}
-                <circle
-                  cx={n.x} cy={n.y} r={n.r - 5}
-                  fill="none"
-                  stroke={isH ? col.border : '#1e293b'}
-                  strokeWidth="0.5"
-                  opacity={isH ? 0.4 : 0.2}
-                />
-
-                {/* Icon via foreignObject */}
-                <foreignObject
-                  x={n.x - fo} y={n.y - fo}
-                  width={fo * 2} height={fo * 2}
-                  style={{ overflow:'visible', pointerEvents:'none' }}
-                >
-                  <div style={{
-                    width:'100%', height:'100%',
-                    display:'flex', alignItems:'center', justifyContent:'center',
-                  }}>
-                    <n.Icon
-                      size={ICON_S[n.lv]}
-                      color={isH ? col.text : isC ? '#818cf8' : '#334155'}
-                      style={{ transition:'color .2s' }}
-                    />
+                {/* Icon */}
+                <foreignObject x={n.x - fo} y={n.y - fo} width={fo*2} height={fo*2} style={{ overflow:'visible', pointerEvents:'none' }}>
+                  <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <n.Icon size={ICON_S[n.lv]} color={isH ? col.text : isC ? '#818cf8' : '#334155'} />
                   </div>
                 </foreignObject>
 
                 {/* Label */}
-                <text
-                  x={n.x} y={n.y + n.r + 14}
-                  textAnchor="middle"
-                  fontSize="7"
-                  fontWeight="800"
-                  letterSpacing="0.8"
+                <text x={n.x} y={n.y + n.r + 14} textAnchor="middle"
+                  fontSize="7" fontWeight="800" letterSpacing="0.8"
                   fill={isH ? col.text : isC ? '#818cf8' : '#374151'}
-                  style={{ transition:'fill .2s', fontFamily:'inherit' }}
-                >
+                  style={{ fontFamily:'inherit' }}>
                   {n.label.toUpperCase()}
                 </text>
               </motion.g>
             );
           })}
-
-          {/* ── Tooltips — rendered last so they sit on top ────────────────── */}
-          <AnimatePresence>
-            {hov && (() => {
-              const n   = MAP[hov];
-              const col = C[n.cat];
-              const tw  = 148;
-              const th  = 24;
-              const tx  = n.x - tw / 2;
-              const ty  = n.y + n.r + 20;
-              return (
-                <motion.g
-                  key={`tt-${hov}`}
-                  initial={{ opacity:0, y:-4 }}
-                  animate={{ opacity:1, y:0 }}
-                  exit={{ opacity:0 }}
-                  transition={{ duration:.15 }}
-                  style={{ pointerEvents:'none' }}
-                >
-                  <rect
-                    x={tx} y={ty} width={tw} height={th} rx={3}
-                    fill="#0f172a" stroke={col.border}
-                    strokeWidth="0.8" opacity="0.97"
-                  />
-                  <text
-                    x={n.x} y={ty + th / 2 + 2.5}
-                    textAnchor="middle"
-                    fontSize="7"
-                    fill="#94a3b8"
-                    style={{ fontFamily:'inherit' }}
-                  >
-                    {n.desc}
-                  </text>
-                </motion.g>
-              );
-            })()}
-          </AnimatePresence>
         </svg>
       </div>
+
+      {/* ── HTML tooltip — large, readable, rendered outside SVG ─────────────── */}
+      <AnimatePresence>
+        {hov && MAP[hov] && (
+          <motion.div
+            key={hov}
+            initial={{ opacity:0, scale:0.82, y:6 }}
+            animate={{ opacity:1, scale:1,    y:0 }}
+            exit={{ opacity:0, scale:0.88, y:4 }}
+            transition={{ duration:0.15 }}
+            style={{
+              position: 'fixed',
+              left: tip.x + 18,
+              top:  tip.y - 72,
+              pointerEvents: 'none',
+              zIndex: 500,
+              transformOrigin: 'bottom left',
+            }}
+            className="bg-slate-900/96 border border-slate-600/40 rounded-sm px-4 py-3 shadow-2xl backdrop-blur-md max-w-[210px]"
+          >
+            <p className="font-black uppercase tracking-wider text-sm mb-1.5" style={{ color: C[MAP[hov].cat].text }}>
+              {MAP[hov].label}
+            </p>
+            <p className="text-slate-300 text-xs leading-relaxed">{MAP[hov].desc}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

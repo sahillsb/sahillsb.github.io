@@ -42,7 +42,14 @@ const NameScreen = () => {
           transition={{ delay: 0.4, duration: 0.9, ease: 'easeOut' }}
         >
           <h1 className="text-[13vw] md:text-[10rem] font-black uppercase tracking-tighter text-white leading-[0.85] mb-6">
-            Sahil
+            {/* Glitch effect — stacked red + blue chromatic aberration layers */}
+            <span className="relative inline-block">
+              Sahil
+              <span aria-hidden="true" className="absolute inset-0 text-rose-400/70"
+                style={{ animation: 'glitch-r 5s linear infinite' }}>Sahil</span>
+              <span aria-hidden="true" className="absolute inset-0 text-sky-400/70"
+                style={{ animation: 'glitch-b 5s linear infinite' }}>Sahil</span>
+            </span>
           </h1>
           <h1 className="text-[13vw] md:text-[10rem] font-black uppercase italic tracking-tighter leading-[0.85] mb-10">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
