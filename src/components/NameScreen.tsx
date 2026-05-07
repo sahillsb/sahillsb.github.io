@@ -14,8 +14,8 @@ const NameScreen = () => {
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center z-10">
 
-      {/* Main content */}
-      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+      {/* Main content — no max-width so BAPARDEKAR can span the full viewport */}
+      <div className="relative z-10 text-center w-full px-4">
 
         {/* Available badge */}
         <motion.div
@@ -42,7 +42,7 @@ const NameScreen = () => {
           </h1>
           <h1
             className="font-black uppercase tracking-tighter leading-[0.85] mb-10"
-            style={{ fontSize: 'clamp(2rem, 8vw, 6.5rem)' }}
+            style={{ fontSize: 'clamp(2.5rem, 14.5vw, 13rem)' }}
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
               Bapardekar
