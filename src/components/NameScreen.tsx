@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import VoidCanvas from './VoidCanvas';
-
 const ROLES = ['Game Designer', 'Level Designer', 'Systems Thinker', 'World Builder'];
 
 const NameScreen = () => {
@@ -15,11 +13,6 @@ const NameScreen = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
-
-      {/* Void — black hole sits behind all text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <VoidCanvas />
-      </div>
 
       {/* Main content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
@@ -42,14 +35,7 @@ const NameScreen = () => {
           transition={{ delay: 0.4, duration: 0.9, ease: 'easeOut' }}
         >
           <h1 className="text-[13vw] md:text-[10rem] font-black uppercase tracking-tighter text-white leading-[0.85] mb-6">
-            {/* Glitch effect — stacked red + blue chromatic aberration layers */}
-            <span className="relative inline-block">
-              Sahil
-              <span aria-hidden="true" className="absolute inset-0 text-rose-400/70"
-                style={{ animation: 'glitch-r 5s linear infinite' }}>Sahil</span>
-              <span aria-hidden="true" className="absolute inset-0 text-sky-400/70"
-                style={{ animation: 'glitch-b 5s linear infinite' }}>Sahil</span>
-            </span>
+            Sahil
           </h1>
           <h1 className="text-[13vw] md:text-[10rem] font-black uppercase italic tracking-tighter leading-[0.85] mb-10">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">

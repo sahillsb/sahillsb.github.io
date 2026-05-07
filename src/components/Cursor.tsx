@@ -40,7 +40,7 @@ export default function Cursor() {
 
       if (ringRef.current) {
         const { x, y } = ringPos.current;
-        ringRef.current.style.transform = `translate(${x - 20}px,${y - 20}px) scale(${ringScl.current})`;
+        ringRef.current.style.transform = `translate(${x - 16}px,${y - 16}px) scale(${ringScl.current})`;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -76,9 +76,9 @@ export default function Cursor() {
         style={{
           position:     'fixed',
           top: 0, left: 0,
-          width: 40, height: 40,
+          width: 32, height: 32,
           borderRadius: '50%',
-          border:       '2.5px solid white',
+          border:       '3.5px solid white',
           mixBlendMode: 'difference',
           pointerEvents:'none',
           zIndex:       10000,
