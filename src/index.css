@@ -8,9 +8,7 @@
    ── public/fonts/ and it loads automatically; Bebas Neue is the fallback.  ── */
 @font-face {
   font-family: 'Hidrom';
-  src: url('/fonts/Hidrom.woff2') format('woff2'),
-       url('/fonts/Hidrom.woff')  format('woff'),
-       url('/fonts/Hidrom.ttf')   format('truetype');
+  src: url('/fonts/HIDROM.otf') format('opentype');
   font-weight: normal;
   font-style:  normal;
   font-display: swap;
