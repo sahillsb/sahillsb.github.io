@@ -30,10 +30,7 @@ const Hero = () => {
             <span>Game Designer</span>
           </div>
 
-          <h1
-            className="font-black uppercase italic leading-[0.9] mb-8"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}
-          >
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase leading-[0.9]">
             Architect of <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
               Player Worlds

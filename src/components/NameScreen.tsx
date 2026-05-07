@@ -35,14 +35,14 @@ const NameScreen = () => {
           transition={{ delay: 0.4, duration: 0.9, ease: 'easeOut' }}
         >
           <h1
-            className="font-black uppercase text-white leading-[0.88] mb-2"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(4rem, 22vw, 14rem)' }}
+            className="font-black uppercase tracking-tighter text-white leading-[0.85] mb-4"
+            style={{ fontSize: 'clamp(4rem, 20vw, 13rem)' }}
           >
             Sahil
           </h1>
           <h1
-            className="font-black uppercase leading-[0.88] mb-10"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 10vw, 7.5rem)' }}
+            className="font-black uppercase tracking-tighter leading-[0.85] mb-10"
+            style={{ fontSize: 'clamp(2rem, 8vw, 6.5rem)' }}
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
               Bapardekar
