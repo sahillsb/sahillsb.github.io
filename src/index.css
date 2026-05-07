@@ -15,8 +15,7 @@
 }
 
 :root {
-  /* Big headings: Hidrom if present, otherwise Bebas Neue (same heavy condensed style) */
-  --font-display: 'Hidrom', 'Bebas Neue', 'Space Grotesk', sans-serif;
+  --font-display: 'Bebas Neue', 'Space Grotesk', sans-serif;
 }
 
 body {

@@ -12,7 +12,7 @@ const NameScreen = () => {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center z-10">
 
       {/* Main content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
@@ -34,16 +34,15 @@ const NameScreen = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.9, ease: 'easeOut' }}
         >
-          {/* clamp() prevents overflow on any screen — Hidrom/Bebas are condensed so these sizes fit */}
           <h1
-            className="font-black uppercase text-white leading-[0.9] mb-4 w-full"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 18vw, 11rem)', letterSpacing: '-0.01em' }}
+            className="font-black uppercase text-white leading-[0.88] mb-2"
+            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(4rem, 22vw, 14rem)' }}
           >
             Sahil
           </h1>
           <h1
-            className="font-black uppercase italic leading-[0.9] mb-10 w-full"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 8.2vw, 6.5rem)', letterSpacing: '-0.01em' }}
+            className="font-black uppercase leading-[0.88] mb-10"
+            style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 10vw, 7.5rem)' }}
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
               Bapardekar
