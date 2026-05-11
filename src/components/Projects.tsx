@@ -1,5 +1,5 @@
-import { useState, type SyntheticEvent } from 'react';
-import { ExternalLink, Play, Lock, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, type SyntheticEvent } from 'react';
+import { ExternalLink, Play, Lock, X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ── Images live in public/projects/<key>_N.ext ───────────────────────────────
@@ -130,7 +130,8 @@ const onImgErr = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) => 
 
 // ── Gallery Modal ─────────────────────────────────────────────────────────────
 const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
-  const [idx, setIdx] = useState(0);
+  const [idx, setIdx]           = useState(0);
+  const [fullscreen, setFs]     = useState(false);
 
   const imgs = project.images.length > 0
     ? project.images.map(f => `/projects/${f}`)
@@ -138,6 +139,18 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
 
   const prev = (e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i - 1 + imgs.length) % imgs.length); };
   const next = (e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i + 1) % imgs.length); };
+
+  // Keyboard: Esc closes fullscreen (or modal), arrows navigate in fullscreen
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape')      { fullscreen ? setFs(false) : onClose(); }
+      if (!fullscreen) return;
+      if (e.key === 'ArrowLeft')   setIdx(i => (i - 1 + imgs.length) % imgs.length);
+      if (e.key === 'ArrowRight')  setIdx(i => (i + 1) % imgs.length);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [fullscreen, imgs.length, onClose]);
 
   return (
     <AnimatePresence>
@@ -164,10 +177,17 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
               src={imgs[idx]}
               alt={project.title}
               onError={onImgErr(project.fallback)}
-              className="w-full h-full object-cover"
+              onClick={() => setFs(true)}
+              className="w-full h-full object-cover cursor-zoom-in"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none" />
 
+            {/* Fullscreen expand */}
+            <button type="button" onClick={e => { e.stopPropagation(); setFs(true); }}
+              className="absolute top-3 right-12 w-8 h-8 bg-black/60 border border-slate-600 flex items-center justify-center text-slate-300 hover:text-white rounded-sm z-10 transition-colors"
+              title="Fullscreen">
+              <Maximize2 size={13} />
+            </button>
             {/* Close */}
             <button type="button" onClick={onClose}
               className="absolute top-3 right-3 w-8 h-8 bg-black/60 border border-slate-600 flex items-center justify-center text-slate-300 hover:text-white rounded-sm z-10 transition-colors">
@@ -253,6 +273,65 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
           </div>
         </motion.div>
       </motion.div>
+    </AnimatePresence>
+
+    {/* ── Fullscreen overlay — z-[60] sits above the modal (z-50) ── */}
+    <AnimatePresence>
+      {fullscreen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 bg-black z-[60] flex items-center justify-center"
+          onClick={() => setFs(false)}
+        >
+          <img
+            src={imgs[idx]}
+            alt={project.title}
+            onError={onImgErr(project.fallback)}
+            onClick={e => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain select-none"
+            style={{ maxHeight: '100dvh', maxWidth: '100dvw' }}
+          />
+
+          {/* Close */}
+          <button type="button" onClick={() => setFs(false)}
+            className="absolute top-5 right-5 w-10 h-10 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white rounded-sm transition-colors">
+            <X size={18} />
+          </button>
+
+          {/* Prev / Next */}
+          {imgs.length > 1 && (
+            <>
+              <button type="button" onClick={prev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white rounded-sm transition-colors">
+                <ChevronLeft size={24} />
+              </button>
+              <button type="button" onClick={next}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white rounded-sm transition-colors">
+                <ChevronRight size={24} />
+              </button>
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/40 text-sm font-mono tracking-widest">
+                {idx + 1} / {imgs.length}
+              </div>
+              {/* Thumbnail strip */}
+              <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-black/50 rounded-sm backdrop-blur-sm max-w-[90vw] overflow-x-auto">
+                {imgs.map((img, i) => (
+                  <button key={i} type="button" onClick={e => { e.stopPropagation(); setIdx(i); }}
+                    className={`flex-shrink-0 w-14 h-10 overflow-hidden rounded-sm border-2 transition-colors ${i === idx ? 'border-white' : 'border-transparent opacity-50 hover:opacity-80'}`}>
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className="absolute top-5 left-5 text-white/40 text-xs uppercase tracking-widest font-bold">
+            {project.title}
+          </div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 };
