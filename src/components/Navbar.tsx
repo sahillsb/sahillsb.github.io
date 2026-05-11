@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Gamepad2 } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GithubIcon, LinkedinIcon } from './icons';
 
@@ -46,12 +46,11 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex-shrink-0 flex items-center gap-2"
           >
-            <div className="w-10 h-10 bg-indigo-600 flex items-center justify-center rounded-sm">
-              <Gamepad2 className="text-white w-6 h-6" />
-            </div>
-            <span className="text-xl font-black italic tracking-tighter text-white uppercase">
-              Sahil<span className="text-indigo-500">.GD</span>
-            </span>
+            <img
+              src="/Website_Logo.png"
+              alt="Sahil.GD"
+              className="h-10 w-auto"
+            />
           </motion.a>
 
           {/* Desktop nav */}
