@@ -153,6 +153,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
   }, [fullscreen, imgs.length, onClose]);
 
   return (
+    <>
     <AnimatePresence>
       <motion.div
         key="overlay"
@@ -333,6 +334,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
         </motion.div>
       )}
     </AnimatePresence>
+    </>
   );
 };
 
