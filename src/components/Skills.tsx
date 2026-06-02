@@ -20,47 +20,47 @@ type Cat = 'core'|'engine'|'tools'|'design'|'systems';
 const NODES: N[] = [
   // Core
   { id:'core',    label:'SAHIL.GD',    desc:'Game Designer · 3 yrs · 4 shipped',
-    Icon:Gamepad2, cat:'core',    lv:0, x:450, y:360, r:42 },
+    Icon:Gamepad2, cat:'core',    lv:0, x:450, y:360, r:54 },
 
   // ── Engine (top) ── 3 symmetric leaf nodes off the root ──────────────────
   { id:'eng',     label:'Engines',     desc:'Game engine expertise',
-    Icon:Box,      cat:'engine',  lv:1, x:450, y:225, r:28, pid:'core'   },
+    Icon:Box,      cat:'engine',  lv:1, x:450, y:210, r:36, pid:'core'   },
   { id:'unity',   label:'Unity 3D',    desc:'Primary engine · 4 shipped titles',
-    Icon:Box,      cat:'engine',  lv:2, x:338, y:90,  r:20, pid:'eng'    },
+    Icon:Box,      cat:'engine',  lv:2, x:330, y:78,  r:28, pid:'eng'    },
   { id:'csharp',  label:'C#',          desc:'Gameplay scripting & tools',
-    Icon:Code2,    cat:'engine',  lv:2, x:450, y:58,  r:20, pid:'eng'    },
+    Icon:Code2,    cat:'engine',  lv:2, x:450, y:46,  r:28, pid:'eng'    },
   { id:'unreal',  label:'Unreal 5',    desc:'High-fidelity worlds & VFX',
-    Icon:Monitor,  cat:'engine',  lv:2, x:562, y:90,  r:20, pid:'eng'    },
+    Icon:Monitor,  cat:'engine',  lv:2, x:570, y:78,  r:28, pid:'eng'    },
 
   // ── Tools (right) ────────────────────────────────────────────────────────
   { id:'tools',   label:'Tools',       desc:'Daily production software',
-    Icon:Cpu,      cat:'tools',   lv:1, x:582, y:360, r:28, pid:'core'   },
+    Icon:Cpu,      cat:'tools',   lv:1, x:594, y:360, r:36, pid:'core'   },
   { id:'maya',    label:'Maya',        desc:'3D modeling & animation',
-    Icon:Box,      cat:'tools',   lv:2, x:712, y:255, r:20, pid:'tools'  },
+    Icon:Box,      cat:'tools',   lv:2, x:726, y:248, r:28, pid:'tools'  },
   { id:'adobe',   label:'Adobe Suite', desc:'Photoshop · Illustrator · Premiere',
-    Icon:Star,     cat:'tools',   lv:2, x:742, y:360, r:20, pid:'tools'  },
+    Icon:Star,     cat:'tools',   lv:2, x:758, y:360, r:28, pid:'tools'  },
   { id:'figma',   label:'Figma',       desc:'UI wireframing & handoff',
-    Icon:PenTool,  cat:'tools',   lv:2, x:712, y:465, r:20, pid:'tools'  },
+    Icon:PenTool,  cat:'tools',   lv:2, x:726, y:472, r:28, pid:'tools'  },
 
   // ── Design (bottom) ──────────────────────────────────────────────────────
   { id:'design',  label:'Design',      desc:'Creative & UX craft',
-    Icon:PenTool,  cat:'design',  lv:1, x:450, y:495, r:28, pid:'core'   },
+    Icon:PenTool,  cat:'design',  lv:1, x:450, y:510, r:36, pid:'core'   },
   { id:'level',   label:'Level Design',desc:'Spatial flow & encounter design',
-    Icon:Sword,    cat:'design',  lv:2, x:338, y:612, r:20, pid:'design' },
+    Icon:Sword,    cat:'design',  lv:2, x:330, y:634, r:28, pid:'design' },
   { id:'uiux',    label:'UI / UX',     desc:'Player interfaces & UX flows',
-    Icon:Monitor,  cat:'design',  lv:2, x:450, y:652, r:20, pid:'design' },
+    Icon:Monitor,  cat:'design',  lv:2, x:450, y:668, r:28, pid:'design' },
   { id:'art',     label:'Art Style',   desc:'Visual direction & asset pipeline',
-    Icon:Layers,   cat:'design',  lv:2, x:562, y:612, r:20, pid:'design' },
+    Icon:Layers,   cat:'design',  lv:2, x:570, y:634, r:28, pid:'design' },
 
   // ── Systems (left) ───────────────────────────────────────────────────────
   { id:'sys',     label:'Systems',     desc:'Technical systems knowledge',
-    Icon:Zap,      cat:'systems', lv:1, x:318, y:360, r:28, pid:'core'   },
+    Icon:Zap,      cat:'systems', lv:1, x:306, y:360, r:36, pid:'core'   },
   { id:'physics', label:'Physics',     desc:'Unity physics & collision',
-    Icon:Shield,   cat:'systems', lv:2, x:188, y:255, r:20, pid:'sys'    },
+    Icon:Shield,   cat:'systems', lv:2, x:174, y:248, r:28, pid:'sys'    },
   { id:'backend', label:'Backend',     desc:'Playfab · player data · live ops',
-    Icon:Database, cat:'systems', lv:2, x:158, y:360, r:20, pid:'sys'    },
+    Icon:Database, cat:'systems', lv:2, x:142, y:360, r:28, pid:'sys'    },
   { id:'network', label:'Networking',  desc:'Photon PUN · multiplayer',
-    Icon:Globe,    cat:'systems', lv:2, x:188, y:465, r:20, pid:'sys'    },
+    Icon:Globe,    cat:'systems', lv:2, x:174, y:472, r:28, pid:'sys'    },
 ];
 
 const MAP = Object.fromEntries(NODES.map(n => [n.id, n]));
@@ -73,7 +73,7 @@ const C: Record<Cat, { border:string; text:string; glow:string; line:string }> =
   systems: { border:'#f59e0b', text:'#fcd34d', glow:'rgba(245,158,11,0.45)',  line:'#f59e0b' },
 };
 
-const ICON_S: Record<number, number> = { 0:30, 1:18, 2:14 };
+const ICON_S: Record<number, number> = { 0:38, 1:24, 2:18 };
 
 export default function SkillTree() {
   const [hov, setHov]     = useState<string|null>(null);
@@ -96,7 +96,7 @@ export default function SkillTree() {
       </div>
 
       {/* SVG — pure coordinate space, no DOM/SVG mixing */}
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-5xl mx-auto px-4">
         <svg
           viewBox="0 0 900 720"
           preserveAspectRatio="xMidYMid meet"
@@ -128,7 +128,7 @@ export default function SkillTree() {
                 key={`l-${n.id}`}
                 x1={p.x} y1={p.y} x2={n.x} y2={n.y}
                 stroke={`url(#lg-${n.id})`}
-                strokeWidth={n.lv === 1 ? 1.8 : 1.2}
+                strokeWidth={n.lv === 1 ? 2.2 : 1.6}
                 strokeLinecap="round"
                 initial={{ opacity:0 }}
                 whileInView={{ opacity:1 }}
@@ -140,10 +140,9 @@ export default function SkillTree() {
 
           {/* Nodes */}
           {NODES.map(n => {
-            const col  = C[n.cat];
-            const isH  = hov === n.id;
-            const isC  = n.lv === 0;
-            const fo   = n.r - (isC ? 8 : 5);
+            const col = C[n.cat];
+            const isC = n.lv === 0;
+            const fo  = n.r - (isC ? 10 : 7);
 
             return (
               <motion.g
@@ -152,7 +151,6 @@ export default function SkillTree() {
                 initial={{ opacity:0, scale:0 }}
                 whileInView={{ opacity:1, scale:1 }}
                 viewport={{ once:true }}
-                whileHover={{ scale: 1.3 }}
                 transition={{ type:'spring', stiffness:220, damping:22, delay: n.lv * 0.09 }}
                 onMouseEnter={(e) => {
                   setHov(n.id);
@@ -161,42 +159,38 @@ export default function SkillTree() {
                 onMouseMove={(e) => setTip({ x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setHov(null)}
               >
-                {/* Pulse ring — core always, others on hover */}
-                {(isC || isH) && (
+                {/* Pulse ring — core node only */}
+                {isC && (
                   <motion.circle
-                    cx={n.x} cy={n.y} r={n.r + (isC ? 8 : 6)}
+                    cx={n.x} cy={n.y} r={n.r + 8}
                     fill="none" stroke={col.border} strokeWidth="1"
-                    animate={isC
-                      ? { opacity:[0.2,0.5,0.2], r:[n.r+5, n.r+10, n.r+5] }
-                      : { opacity:[0.4, 0.7, 0.4] }}
+                    animate={{ opacity:[0.2,0.5,0.2], r:[n.r+5, n.r+12, n.r+5] }}
                     transition={{ duration:2.5, repeat:Infinity, ease:'easeInOut' }}
                   />
                 )}
 
-                {/* Body */}
+                {/* Body — colored border and glow always on */}
                 <circle cx={n.x} cy={n.y} r={n.r}
-                  fill={isH ? '#0f172a' : '#080d1a'}
-                  stroke={isH ? col.border : isC ? '#6366f1' : '#1e293b'}
-                  strokeWidth={isH || isC ? 2 : 1.5}
-                  style={{ filter: isH
-                    ? `drop-shadow(0 0 12px ${col.glow})`
-                    : isC ? 'drop-shadow(0 0 16px rgba(99,102,241,0.55))' : 'none' }}
+                  fill="#0f172a"
+                  stroke={col.border}
+                  strokeWidth={isC ? 2.5 : 2}
+                  style={{ filter: `drop-shadow(0 0 ${isC ? 18 : 10}px ${col.glow})` }}
                 />
-                <circle cx={n.x} cy={n.y} r={n.r - 5}
-                  fill="none" stroke={isH ? col.border : '#1e293b'}
-                  strokeWidth="0.5" opacity={isH ? 0.4 : 0.15} />
+                <circle cx={n.x} cy={n.y} r={n.r - 6}
+                  fill="none" stroke={col.border}
+                  strokeWidth="0.6" opacity="0.35" />
 
-                {/* Icon */}
+                {/* Icon — always colored */}
                 <foreignObject x={n.x - fo} y={n.y - fo} width={fo*2} height={fo*2} style={{ overflow:'visible', pointerEvents:'none' }}>
                   <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                    <n.Icon size={ICON_S[n.lv]} color={isH ? col.text : isC ? '#818cf8' : '#334155'} />
+                    <n.Icon size={ICON_S[n.lv]} color={col.text} />
                   </div>
                 </foreignObject>
 
-                {/* Label */}
-                <text x={n.x} y={n.y + n.r + 14} textAnchor="middle"
-                  fontSize="7" fontWeight="800" letterSpacing="0.8"
-                  fill={isH ? col.text : isC ? '#818cf8' : '#374151'}
+                {/* Label — always colored */}
+                <text x={n.x} y={n.y + n.r + 16} textAnchor="middle"
+                  fontSize="9" fontWeight="800" letterSpacing="0.8"
+                  fill={col.text}
                   style={{ fontFamily:'inherit' }}>
                   {n.label.toUpperCase()}
                 </text>
