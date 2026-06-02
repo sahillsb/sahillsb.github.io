@@ -361,7 +361,11 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, []);
 
   useEffect(() => {
