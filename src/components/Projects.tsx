@@ -384,15 +384,16 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 overflow-y-auto"
         >
+          <div className="flex justify-center min-h-full items-start py-8 px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: 0.22 }}
             onClick={e => e.stopPropagation()}
-            className="bg-[#0f0f0f] border border-slate-800 rounded-sm max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl scrollbar-hide"
+            className="bg-[#0f0f0f] border border-slate-800 rounded-sm max-w-4xl w-full shadow-2xl"
           >
             {/* ── Hero Banner ── */}
             <div className="relative h-48 sm:h-60 overflow-hidden flex-shrink-0">
@@ -559,6 +560,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
               </div>
             </div>
           </motion.div>
+          </div>
         </motion.div>
       </AnimatePresence>
 
