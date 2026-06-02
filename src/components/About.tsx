@@ -38,27 +38,9 @@ const About = () => {
 
         <div className="grid lg:grid-cols-2 gap-8 items-stretch">
 
-          {/* Left: Photo */}
+          {/* Left: Description + Stats + Interests */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="absolute -inset-px bg-gradient-to-br from-indigo-500/50 via-transparent to-indigo-500/10 rounded-sm pointer-events-none z-10" />
-            <img
-              src="/ME.png"
-              alt="Sahil"
-              className="w-full h-full object-cover object-top rounded-sm border border-indigo-500/40"
-              style={{ maxHeight: '520px', filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.2))' }}
-            />
-            <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-indigo-500 pointer-events-none" />
-            <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-indigo-500 pointer-events-none" />
-          </motion.div>
-
-          {/* Right: Description + Stats + Interests */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="flex flex-col gap-6"
@@ -110,6 +92,24 @@ const About = () => {
                 ))}
               </div>
             </div>
+          </motion.div>
+
+          {/* Right: Photo — full height */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative h-full min-h-[480px]"
+          >
+            <div className="absolute -inset-px bg-gradient-to-br from-indigo-500/50 via-transparent to-indigo-500/10 rounded-sm pointer-events-none z-10" />
+            <img
+              src="/ME.png"
+              alt="Sahil"
+              className="w-full h-full object-cover object-top rounded-sm border border-indigo-500/40"
+              style={{ filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.2))' }}
+            />
+            <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-indigo-500 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-indigo-500 pointer-events-none" />
           </motion.div>
 
         </div>
