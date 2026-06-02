@@ -335,7 +335,6 @@ const onImgErr = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) => 
   if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
 };
 
-// ── Bullet item used in the modal ─────────────────────────────────────────────
 const Bullet = ({ text }: { text: string }) => (
   <li className="flex items-start gap-3 text-sm text-white/90">
     <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
@@ -387,184 +386,173 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
           className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 overflow-y-auto"
         >
           <div className="flex justify-center min-h-full items-start py-8 px-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{ duration: 0.22 }}
-            onClick={e => e.stopPropagation()}
-            className="bg-[#0f0f0f] border border-slate-800 rounded-sm max-w-4xl w-full shadow-2xl"
-          >
-            {/* ── Hero Banner ── */}
-            <div className="relative h-48 sm:h-60 overflow-hidden flex-shrink-0">
-              <img
-                src={imgs[0]}
-                alt={project.title}
-                onError={onImgErr(project.fallback)}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ duration: 0.22 }}
+              onClick={e => e.stopPropagation()}
+              className="bg-[#0f0f0f] border border-slate-800 rounded-sm max-w-5xl w-full shadow-2xl flex flex-col md:flex-row overflow-hidden"
+              style={{ maxHeight: '85vh' }}
+            >
+              {/* ── Left column: hero + all text ── */}
+              <div className="flex-1 min-w-0 flex flex-col overflow-y-auto scrollbar-hide">
 
-              {/* Title overlay */}
-              <div className="absolute bottom-0 left-0 p-6 pr-14">
-                <h2 className="text-2xl sm:text-4xl font-black uppercase text-white tracking-wider leading-none mb-2">
-                  {project.title}
-                </h2>
-                <p className="text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                  {project.subtitle}
-                </p>
-              </div>
+                {/* Hero */}
+                <div className="relative h-52 sm:h-64 flex-shrink-0 overflow-hidden">
+                  <img
+                    src={imgs[0]}
+                    alt={project.title}
+                    onError={onImgErr(project.fallback)}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 p-6">
+                    <h2 className="text-2xl sm:text-4xl font-black uppercase text-white tracking-wider leading-none mb-2">
+                      {project.title}
+                    </h2>
+                    <p className="text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                      {project.subtitle}
+                    </p>
+                  </div>
+                </div>
 
-              {/* Close */}
-              <button
-                type="button"
-                onClick={onClose}
-                className="absolute top-4 right-4 w-9 h-9 bg-black/60 border border-slate-600 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors z-10"
-              >
-                <X size={15} />
-              </button>
-            </div>
+                {/* Text content */}
+                <div className="p-6 md:p-8 space-y-7">
 
-            {/* ── Two-column body ── */}
-            <div className="flex flex-col md:flex-row">
+                  <section>
+                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">About the Game</h3>
+                    <p className="text-slate-300 text-sm leading-relaxed">{project.description}</p>
+                  </section>
 
-              {/* Left column */}
-              <div className="flex-1 min-w-0 p-6 md:p-8 md:border-r md:border-slate-800/60">
-
-                {/* About */}
-                <section className="mb-8">
-                  <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">About the Game</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">{project.description}</p>
-                </section>
-
-                {/* Highlights */}
-                {project.highlights.length > 0 && (
-                  <section className="mb-8">
-                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Project Highlights</h3>
+                  <section>
+                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Project Details</h3>
                     <ul className="space-y-2.5">
-                      {project.highlights.map((h, i) => <Bullet key={i} text={h} />)}
+                      {project.studio && (
+                        <li className="flex items-start gap-3 text-sm">
+                          <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                          <span><strong className="text-white">Studio:</strong>{' '}
+                            <span className="text-slate-300">{project.studio}</span></span>
+                        </li>
+                      )}
+                      <li className="flex items-start gap-3 text-sm">
+                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                        <span><strong className="text-white">Genre:</strong>{' '}
+                          <span className="text-slate-300">{project.genre}</span></span>
+                      </li>
+                      {project.platform && project.platform !== '–' && (
+                        <li className="flex items-start gap-3 text-sm">
+                          <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                          <span><strong className="text-white">Platform:</strong>{' '}
+                            <span className="text-slate-300">{project.platform}</span></span>
+                        </li>
+                      )}
+                      {project.engine && project.engine !== '–' && (
+                        <li className="flex items-start gap-3 text-sm">
+                          <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                          <span><strong className="text-white">Engine:</strong>{' '}
+                            <span className="text-slate-300">{project.engine}</span></span>
+                        </li>
+                      )}
                     </ul>
                   </section>
-                )}
 
-                {/* Contributions */}
-                {project.contributions.length > 0 && (
-                  <section className="mb-8">
-                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">My Contributions</h3>
-                    <ul className="space-y-2.5">
-                      {project.contributions.map((c, i) => <Bullet key={i} text={c} />)}
-                    </ul>
-                  </section>
-                )}
+                  {project.highlights.length > 0 && (
+                    <section>
+                      <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Project Highlights</h3>
+                      <ul className="space-y-2.5">
+                        {project.highlights.map((h, i) => <Bullet key={i} text={h} />)}
+                      </ul>
+                    </section>
+                  )}
 
-                {/* Gallery */}
-                {imgs.length > 1 && (
-                  <section className="mb-8">
-                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Gallery</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {imgs.map((img, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => setFsIdx(i)}
-                          className="aspect-video overflow-hidden rounded-sm border border-slate-800 hover:border-cyan-500/50 transition-colors group"
-                        >
-                          <img
-                            src={img}
-                            alt=""
-                            onError={onImgErr(project.fallback)}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-80 group-hover:opacity-100"
-                          />
-                        </button>
+                  {project.contributions.length > 0 && (
+                    <section>
+                      <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">My Contributions</h3>
+                      <ul className="space-y-2.5">
+                        {project.contributions.map((c, i) => <Bullet key={i} text={c} />)}
+                      </ul>
+                    </section>
+                  )}
+
+                  {project.features.length > 0 && (
+                    <section>
+                      <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Features</h3>
+                      <ul className="space-y-2.5">
+                        {project.features.map((f, i) => <Bullet key={i} text={f} />)}
+                      </ul>
+                    </section>
+                  )}
+
+                  <section>
+                    <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider mb-3">Tools & Tech</h3>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.map(t => (
+                        <span key={t} className="px-2 py-1 bg-slate-800 text-slate-300 text-[9px] uppercase font-bold rounded-sm border border-slate-700">{t}</span>
                       ))}
                     </div>
                   </section>
-                )}
 
-                {/* Actions */}
-                <div className="flex gap-3 flex-wrap">
-                  {isActive(project.playUrl) ? (
-                    <a href={project.playUrl} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-widest transition-colors rounded-sm">
-                      <Play size={12} className="fill-current" /> Play / Download
-                    </a>
-                  ) : (
-                    <span className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-slate-600 font-black text-xs uppercase tracking-widest cursor-not-allowed rounded-sm">
-                      <Lock size={12} /> Demo Coming Soon
-                    </span>
-                  )}
-                  {isActive(project.caseStudy) && (
-                    <a href={project.caseStudy} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 border border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-indigo-400 font-black text-xs uppercase tracking-widest transition-all rounded-sm">
-                      <ExternalLink size={12} /> Case Study
-                    </a>
-                  )}
+                  <div className="flex gap-3 flex-wrap pb-2">
+                    {isActive(project.playUrl) ? (
+                      <a href={project.playUrl} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-widest transition-colors rounded-sm">
+                        <Play size={12} className="fill-current" /> Play / Download
+                      </a>
+                    ) : (
+                      <span className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-slate-600 font-black text-xs uppercase tracking-widest cursor-not-allowed rounded-sm">
+                        <Lock size={12} /> Demo Coming Soon
+                      </span>
+                    )}
+                    {isActive(project.caseStudy) && (
+                      <a href={project.caseStudy} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2.5 border border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-indigo-400 font-black text-xs uppercase tracking-widest transition-all rounded-sm">
+                        <ExternalLink size={12} /> Case Study
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Right column */}
-              <div className="w-full md:w-64 lg:w-72 flex-shrink-0 p-6 md:p-8">
+              {/* ── Right column: close button + stacked gallery images ── */}
+              <div className="relative w-full md:w-56 lg:w-64 flex-shrink-0 border-t md:border-t-0 md:border-l border-slate-800 overflow-y-auto scrollbar-hide bg-[#0a0a0a]">
 
-                {/* Project Details */}
-                <section className="mb-8">
-                  <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-4">Project{' '}Details</h3>
-                  <ul className="space-y-3">
-                    {project.studio && (
-                      <li className="flex items-start gap-3 text-sm">
-                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
-                        <span><strong className="text-white">Studio:</strong>{' '}
-                          <span className="text-slate-300">{project.studio}</span></span>
-                      </li>
-                    )}
-                    <li className="flex items-start gap-3 text-sm">
-                      <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
-                      <span><strong className="text-white">Genre:</strong>{' '}
-                        <span className="text-slate-300">{project.genre}</span></span>
-                    </li>
-                    {project.platform && project.platform !== '–' && (
-                      <li className="flex items-start gap-3 text-sm">
-                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
-                        <span><strong className="text-white">Platform:</strong>{' '}
-                          <span className="text-slate-300">{project.platform}</span></span>
-                      </li>
-                    )}
-                    {project.engine && project.engine !== '–' && (
-                      <li className="flex items-start gap-3 text-sm">
-                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
-                        <span><strong className="text-white">Engine:</strong>{' '}
-                          <span className="text-slate-300">{project.engine}</span></span>
-                      </li>
-                    )}
-                  </ul>
-                </section>
+                {/* Close button — sticky at the top */}
+                <div className="sticky top-0 z-10 flex justify-end p-3 bg-[#0a0a0a]/80 backdrop-blur-sm">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="w-9 h-9 bg-black/60 border border-slate-600 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
 
-                {/* Features */}
-                {project.features.length > 0 && (
-                  <section className="mb-8">
-                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-4">Features</h3>
-                    <ul className="space-y-2.5">
-                      {project.features.map((f, i) => <Bullet key={i} text={f} />)}
-                    </ul>
-                  </section>
-                )}
-
-                {/* Tools & Tech */}
-                <section>
-                  <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider mb-3">Tools & Tech</h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map(t => (
-                      <span key={t} className="px-2 py-1 bg-slate-800 text-slate-300 text-[9px] uppercase font-bold rounded-sm border border-slate-700">{t}</span>
-                    ))}
-                  </div>
-                </section>
+                {/* Images stacked vertically */}
+                <div className="flex flex-col">
+                  {imgs.map((img, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setFsIdx(i)}
+                      className="block w-full group border-b border-slate-800/60 last:border-b-0 flex-shrink-0"
+                    >
+                      <img
+                        src={img}
+                        alt=""
+                        onError={onImgErr(project.fallback)}
+                        className="w-full aspect-[4/3] object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-200"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* ── Fullscreen overlay — z-[60] sits above the modal (z-50) ── */}
+      {/* ── Fullscreen overlay ── */}
       <AnimatePresence>
         {fsIdx !== null && (
           <motion.div
