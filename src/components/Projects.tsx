@@ -385,7 +385,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
           onClick={onClose}
           className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 overflow-y-auto"
         >
-          <div className="flex justify-center min-h-full items-start py-8 px-4">
+          <div className="flex justify-center min-h-full items-start pt-20 pb-10 px-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -529,19 +529,19 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                 </div>
 
                 {/* Images stacked vertically */}
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-2 px-2 pb-2">
                   {imgs.map((img, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setFsIdx(i)}
-                      className="block w-full group border-b border-slate-800/60 last:border-b-0 flex-shrink-0"
+                      className="block w-full group rounded-sm overflow-hidden flex-shrink-0 border border-slate-800/60 hover:border-indigo-500/50 transition-colors duration-200"
                     >
                       <img
                         src={img}
                         alt=""
                         onError={onImgErr(project.fallback)}
-                        className="w-full aspect-[4/3] object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-200"
+                        className="w-full aspect-[4/3] object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
                       />
                     </button>
                   ))}

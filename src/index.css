@@ -54,6 +54,16 @@ html {
   overflow-y: scroll;
 }
 
+/* ── Dark themed scrollbars ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+}
+*::-webkit-scrollbar        { width: 5px; height: 5px; }
+*::-webkit-scrollbar-track  { background: transparent; }
+*::-webkit-scrollbar-thumb  { background: #334155; border-radius: 20px; }
+*::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
 /* Hide native cursor on pointer devices */
 @media (pointer: fine) {
   *, *::before, *::after { cursor: none !important; }
