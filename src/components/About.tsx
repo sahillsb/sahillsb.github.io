@@ -38,13 +38,27 @@ const About = () => {
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-          {/* Bio */}
+          {/* Photo + Bio */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="space-y-6"
           >
+            {/* Photo */}
+            <div className="relative w-full max-w-sm">
+              <div className="absolute -inset-px bg-gradient-to-br from-indigo-500/60 via-transparent to-indigo-500/20 rounded-sm pointer-events-none z-10" />
+              <img
+                src="/ME.png"
+                alt="Sahil"
+                className="w-full object-cover object-top rounded-sm border border-indigo-500/40"
+                style={{ maxHeight: '360px', filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.25))' }}
+              />
+              {/* Corner accent */}
+              <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-indigo-500 rounded-bl-sm pointer-events-none" />
+              <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-indigo-500 rounded-tr-sm pointer-events-none" />
+            </div>
+
             <p className="text-slate-200 text-lg leading-relaxed">
               I'm Sahil — a game designer from Pune with three years of experience building games that actually ship. My work spans competitive multiplayer FPS design, government-commissioned VR experiences, and experimental web3 gaming.
             </p>
