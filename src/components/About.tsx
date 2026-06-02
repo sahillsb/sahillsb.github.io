@@ -36,48 +36,47 @@ const About = () => {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
 
-          {/* Photo + Bio */}
+          {/* Left: Photo */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="relative"
           >
-            {/* Photo */}
-            <div className="relative w-full max-w-sm">
-              <div className="absolute -inset-px bg-gradient-to-br from-indigo-500/60 via-transparent to-indigo-500/20 rounded-sm pointer-events-none z-10" />
-              <img
-                src="/ME.png"
-                alt="Sahil"
-                className="w-full object-cover object-top rounded-sm border border-indigo-500/40"
-                style={{ maxHeight: '360px', filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.25))' }}
-              />
-              {/* Corner accent */}
-              <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-indigo-500 rounded-bl-sm pointer-events-none" />
-              <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-indigo-500 rounded-tr-sm pointer-events-none" />
-            </div>
-
-            <p className="text-slate-200 text-lg leading-relaxed">
-              I'm Sahil — a game designer from Pune with three years of experience building games that actually ship. My work spans competitive multiplayer FPS design, government-commissioned VR experiences, and experimental web3 gaming.
-            </p>
-            <p className="text-slate-400 leading-relaxed">
-              I believe in the feel-first principle: every mechanic should be satisfying before it's balanced, intuitive before it's deep. I spend as much time studying what makes great games great as I do designing them — from the Spelunky rope to the Dark Souls bonfire, design lives in the details.
-            </p>
-            <p className="text-slate-400 leading-relaxed">
-              Currently at Dot9 Games working on FAU-G Domination — handling weapon systems, level progression, balancing, and Playfab backend. When I'm not at the desk, I'm prototyping side projects that push my limits as a designer.
-            </p>
+            <div className="absolute -inset-px bg-gradient-to-br from-indigo-500/50 via-transparent to-indigo-500/10 rounded-sm pointer-events-none z-10" />
+            <img
+              src="/ME.png"
+              alt="Sahil"
+              className="w-full h-full object-cover object-top rounded-sm border border-indigo-500/40"
+              style={{ maxHeight: '520px', filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.2))' }}
+            />
+            <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-indigo-500 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-indigo-500 pointer-events-none" />
           </motion.div>
 
-          {/* Stats + interests */}
+          {/* Right: Description + Stats + Interests */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="flex flex-col gap-6"
           >
-            {/* Quick stats */}
+            {/* Bio box */}
+            <div className="border border-indigo-500/50 bg-slate-900/40 rounded-sm p-6 space-y-4">
+              <p className="text-slate-200 text-base leading-relaxed">
+                I'm Sahil — a game designer from Pune with three years of experience building games that actually ship. My work spans competitive multiplayer FPS design, government-commissioned VR experiences, and experimental web3 gaming.
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                I believe in the feel-first principle: every mechanic should be satisfying before it's balanced, intuitive before it's deep. I spend as much time studying what makes great games great as I do designing them — from the Spelunky rope to the Dark Souls bonfire, design lives in the details.
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Currently at Dot9 Games working on FAU-G Domination — handling weapon systems, level progression, balancing, and Playfab backend. When I'm not at the desk, I'm prototyping side projects that push my limits as a designer.
+              </p>
+            </div>
+
+            {/* Stats grid */}
             <div className="grid grid-cols-2 gap-4">
               {stats.map((s) => (
                 <div
@@ -112,6 +111,7 @@ const About = () => {
               </div>
             </div>
           </motion.div>
+
         </div>
       </div>
     </section>
