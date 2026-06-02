@@ -1,43 +1,105 @@
 import { useState, useEffect, type SyntheticEvent } from 'react';
-import { ExternalLink, Play, Lock, X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { ExternalLink, Play, Lock, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-// ── Images live in public/projects/<key>_N.ext ───────────────────────────────
-// images[0] = thumbnail shown on card + first image in modal gallery
-// ─────────────────────────────────────────────────────────────────────────────
 
 const projects = [
   // ── Professional ─────────────────────────────────────────────────────────
   {
     key: 'faug',
     title: 'FAUG Domination',
+    subtitle: 'TACTICAL TEAM-BASED ZONE CAPTURE FPS FOR MOBILE',
     category: 'FPS Multiplayer',
-    badge: 'Shipped',
+    badge: 'Shipped' as const,
+    studio: 'nCore Games',
+    genre: 'FPS / Multiplayer',
+    platform: 'Android / iOS',
+    engine: 'Unity',
     description: 'FAU-G Domination is a fast-paced multiplayer mode built on tactical team combat — players compete to capture and hold strategic zones. Focused on map control, squad coordination, and smart positioning over pure aggression.',
+    highlights: [
+      "Published on Google Play Store with millions of downloads",
+      "Part of the FAUG franchise — India's top mobile FPS title",
+      'Real-time multiplayer with Photon networking at scale',
+    ],
+    contributions: [
+      'Zone capture game mode design and ruleset',
+      'Multiplayer session flow and matchmaking UX',
+      'Combat balancing and level design',
+      'Asset integration with Maya & Substance Painter',
+    ],
+    features: [
+      'Team-based strategic zone capture',
+      'Real-time multiplayer via Photon',
+      'Tactical combat mechanics',
+      'Dynamic respawn and spawn protection',
+    ],
     tags: ['Unity', 'Maya', 'Substance Painter', 'Photon', 'Playfab', 'Firestore'],
     playUrl: 'https://play.google.com/store/apps/details?id=com.dotnine.faug',
     caseStudy: '',
-    images: ['faug_1.jpg','faug_2.jpg','faug_3.png','faug_4.png','faug_5.png'],
+    images: ['faug_1.jpg', 'faug_2.jpg', 'faug_3.png', 'faug_4.png', 'faug_5.png'],
     fallback: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000',
   },
   {
     key: 'mumbai',
     title: 'Mumbai Megapolis Metaverse',
+    subtitle: 'GOVERNMENT-COMMISSIONED CIVIC VR EXPERIENCE',
     category: 'VR Experience',
-    badge: 'Shipped',
+    badge: 'Shipped' as const,
+    studio: 'TEM',
+    genre: 'VR / Simulation',
+    platform: 'Android / iOS (Google Cardboard)',
+    engine: 'Unity',
     description: "A free-roam VR experience commissioned by the Government of Maharashtra. Bridges the gap between ongoing mega-projects in Mumbai and the public — giving citizens a real-time visual of what's under development.",
+    highlights: [
+      'Commissioned by the Government of Maharashtra',
+      'Featured at infrastructure and civic exhibitions across Mumbai',
+      'One of the first government VR civic-tech projects in India',
+    ],
+    contributions: [
+      'VR experience design and interaction flow',
+      '3D environment modeling and scene composition',
+      'Interactive information point placement and UX',
+      'Mobile VR optimization for low-end hardware',
+    ],
+    features: [
+      'Free-roam VR environment',
+      'Real-time infrastructure project visualization',
+      'Interactive information hotspots',
+      'Mobile VR compatibility (Google Cardboard)',
+    ],
     tags: ['Unity', 'Blender'],
     playUrl: 'https://play.google.com/store/apps/details?id=com.tem.mumbaimetaverse',
     caseStudy: '',
-    images: ['mumbai_1.png','mumbai_2.png','mumbai_3.png','mumbai_4.png','mumbai_5.png'],
+    images: ['mumbai_1.png', 'mumbai_2.png', 'mumbai_3.png', 'mumbai_4.png', 'mumbai_5.png'],
     fallback: 'https://images.unsplash.com/photo-1617854818583-09e7f077a156?auto=format&fit=crop&q=80&w=1000',
   },
   {
     key: 'projectx',
     title: 'Project X',
+    subtitle: 'WEB3 DRAGON-RIDER DEATHMATCH WITH CRYPTO REWARDS',
     category: 'Web3 Multiplayer',
-    badge: 'Shipped',
+    badge: 'Shipped' as const,
+    studio: 'Confidential (NDA)',
+    genre: 'Web3 / Multiplayer',
+    platform: 'PC (Web / WebGL)',
+    engine: 'Unity (WebGL)',
     description: 'A dragon-rider deathmatch on the web where players earn coins redeemable as crypto via MetaMask wallet. Designed the core combat loop, reward economy, and multiplayer session flow.',
+    highlights: [
+      'Blockchain-integrated play-to-earn reward system',
+      'Dragon-rider aerial deathmatch combat',
+      'MetaMask wallet integration for crypto withdrawals',
+    ],
+    contributions: [
+      'Core combat loop and aerial movement design',
+      'Reward economy and coin-to-crypto conversion flow',
+      'Multiplayer session management design',
+      'UI/UX design in Figma',
+    ],
+    features: [
+      'Dragon-rider aerial deathmatch',
+      'MetaMask wallet integration',
+      'Play-to-earn crypto reward system',
+      'Real-time multiplayer combat',
+    ],
     tags: ['Unity', 'Blender', 'Figma'],
     playUrl: '',
     caseStudy: '',
@@ -48,63 +110,208 @@ const projects = [
   {
     key: 'rapid',
     title: 'Rapid',
+    subtitle: 'SKILL-HUNGRY TPS BUILT FOR HIGH MANOEUVRABILITY',
     category: 'TPS Mobile',
-    badge: 'In Dev',
+    badge: 'In Dev' as const,
+    studio: 'Indie / Personal',
+    genre: 'TPS / Action',
+    platform: 'Android / iOS',
+    engine: 'Unity',
     description: 'A tactical third-person shooter built for high manoeuvrability and skill-hungry strategies. Fast movement, sharp gunplay, and team-based combat — currently in active development.',
+    highlights: [
+      'Inspired by high-skill-ceiling competitive mobile shooters',
+      'Focus on movement mechanics and positional play',
+      'Currently in active development with a playable build',
+    ],
+    contributions: [
+      'Game design and creative direction',
+      '3D character and weapon modeling',
+      'Movement system and combat mechanic design',
+      'Level design and map prototyping',
+    ],
+    features: [
+      'High-maneuverability movement system',
+      'Skill-based gunplay mechanics',
+      'Team-based tactical combat',
+      'Custom weapon and character assets',
+    ],
     tags: ['Unity', 'Blender', 'Substance Painter'],
     playUrl: '',
     caseStudy: '',
-    images: ['rapid_1.jpg','rapid_2.jpg','rapid_3.jpg','rapid_4.jpg','rapid_5.jpg'],
+    images: ['rapid_1.jpg', 'rapid_2.jpg', 'rapid_3.jpg', 'rapid_4.jpg', 'rapid_5.jpg'],
     fallback: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=1000',
   },
   {
     key: 'coindash',
     title: 'Coin Dash',
+    subtitle: 'ENDLESS RUNNER WITH COSMETIC UPGRADE PROGRESSION',
     category: 'Endless Runner',
-    badge: 'Shipped',
+    badge: 'Shipped' as const,
+    studio: 'Personal',
+    genre: 'Casual / Endless Runner',
+    platform: 'Android',
+    engine: 'Unity',
     description: 'An endless runner where the player collects coins on the fly and spends them on cosmetic upgrades — hats, trails, and character skins. Clean loop with satisfying progression.',
+    highlights: [
+      'Complete mobile game with shipped build',
+      'Cosmetic upgrade economy (hats, trails, skins)',
+      'Escalating difficulty with performance-based coin rewards',
+    ],
+    contributions: [
+      'Full game design and production',
+      '2D art and character illustrations',
+      'Cosmetic upgrade system and shop design',
+      'Difficulty curve and progression tuning',
+    ],
+    features: [
+      'Endless runner core loop',
+      'Collectible coin mechanics',
+      'Cosmetic upgrade shop (hats, trails, skins)',
+      'Escalating difficulty system',
+    ],
     tags: ['Unity', 'Photoshop'],
     playUrl: '',
     caseStudy: '',
-    images: ['coindash_1.jpg','coindash_2.jpg','coindash_3.jpg','coindash_4.jpg','coindash_5.jpg','coindash_6.png'],
+    images: ['coindash_1.jpg', 'coindash_2.jpg', 'coindash_3.jpg', 'coindash_4.jpg', 'coindash_5.jpg', 'coindash_6.png'],
     fallback: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000',
   },
   {
     key: 'parcelstack',
     title: 'Parcel Stack',
+    subtitle: 'PHYSICS-BASED HYPER-CASUAL STACKING RUNNER',
     category: 'Casual Runner',
-    badge: 'Shipped',
+    badge: 'Shipped' as const,
+    studio: 'Personal',
+    genre: 'Hyper-Casual',
+    platform: 'Android / iOS',
+    engine: 'Unity',
     description: 'A casual mobile game where the player loads parcels onto a stretching cart — the longer the stack, the higher the coin reward. Designed around satisfying physics and a simple escalating risk loop.',
+    highlights: [
+      'Satisfying physics-based stacking mechanic',
+      'Simple one-tap controls with escalating risk/reward',
+      'Shipped as part of hyper-casual game portfolio',
+    ],
+    contributions: [
+      'Core stacking mechanic and physics tuning',
+      '3D asset modeling for parcels and environment',
+      'Level progression and difficulty curve design',
+      'Monetization loop design',
+    ],
+    features: [
+      'Physics-based parcel stacking',
+      'Escalating risk/reward loop',
+      'Simple one-tap controls',
+      'Coin reward system',
+    ],
     tags: ['Unity', 'Blender'],
     playUrl: '',
     caseStudy: '',
     images: [],
     fallback: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=1000',
   },
-  // ── Research & Creative ───────────────────────────────────────────────────
+  // ── Research ──────────────────────────────────────────────────────────────
   {
     key: 'aiprototype',
     title: 'AI Prototype',
+    subtitle: 'NPC BEHAVIOR RESEARCH USING STATE MACHINES & BEHAVIOR TREES',
     category: 'NPC AI Research',
-    badge: 'Research',
+    badge: 'Research' as const,
+    studio: 'Research / Personal',
+    genre: 'AI Research / Prototype',
+    platform: 'PC (Windows)',
+    engine: 'Unity',
     description: 'An experimental Unity prototype exploring AI behavior systems — state machines, behavior trees, and dynamic NPC decision-making. Built to prototype AI patterns covering pathfinding, combat reactions, and adaptive difficulty for use in future game titles.',
+    highlights: [
+      'State machine and behavior tree architecture research',
+      'Dynamic NPC combat and pathfinding experiments',
+      'Adaptive difficulty system prototyping',
+    ],
+    contributions: [
+      'AI architecture design and system documentation',
+      'State machine implementation in Unity C#',
+      'Behavior tree integration and node design',
+      'Pathfinding and obstacle avoidance testing',
+    ],
+    features: [
+      'Finite state machine NPC AI',
+      'Behavior tree decision systems',
+      'A* and NavMesh pathfinding',
+      'Adaptive difficulty scaling',
+    ],
     tags: ['Unity', 'C#', 'AI Behavior', 'State Machines'],
     playUrl: '',
     caseStudy: '',
-    images: ['aiprototype_1.jpg','aiprototype_2.jpg','aiprototype_3.jpg'],
+    images: ['aiprototype_1.jpg', 'aiprototype_2.jpg', 'aiprototype_3.jpg'],
     fallback: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=1000',
   },
+  // ── Creative ──────────────────────────────────────────────────────────────
   {
-    key: 'art',
-    title: 'Art & Design',
+    key: 'art2d',
+    title: '2D Art',
+    subtitle: 'DIGITAL ILLUSTRATION, CHARACTER DESIGN & PHOTO MANIPULATION',
     category: 'Digital Art',
-    badge: 'Personal',
-    description: 'A collection of personal creative work — 3D character modeling and rigging, photo manipulation, and original concept designs. Visual exploration that directly informs game art direction, asset pipelines, and visual storytelling across projects.',
-    tags: ['Blender', 'Photoshop', '3D Modeling', 'Concept Art', 'Character Rigging'],
+    badge: 'Personal' as const,
+    studio: 'Personal',
+    genre: 'Digital Art / Illustration',
+    platform: '–',
+    engine: 'Photoshop',
+    description: 'A collection of 2D digital artworks including character design, landscape painting, and photo manipulation. These works explore visual storytelling and develop foundational art skills directly applied to game UI, concept art, and marketing materials.',
+    highlights: [
+      'Original character design and concept art',
+      'Landscape painting for environment reference and world-building',
+      'Photo manipulation and compositing for promotional assets',
+    ],
+    contributions: [
+      'Character concept design and illustration',
+      'Landscape and environment painting',
+      'Photo manipulation and digital compositing',
+      'Style exploration for game art direction',
+    ],
+    features: [
+      'Character concept design',
+      'Environment / landscape illustration',
+      'Photo manipulation & compositing',
+      'Digital painting & stylization',
+    ],
+    tags: ['Photoshop', 'Digital Illustration', 'Concept Art', 'Photo Manipulation'],
     playUrl: '',
     caseStudy: '',
-    images: ['art_1.jpg','art_2.jpg','art_3.png','art_4.png'],
+    images: ['art2d_1.jpg', 'art2d_2.jpg', 'art2d_3.jpg', 'art2d_4.jpg'],
     fallback: 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&q=80&w=1000',
+  },
+  {
+    key: 'art3d',
+    title: '3D Art',
+    subtitle: '3D MODELING, RIGGING & GAME-READY ASSET CREATION',
+    category: '3D Art & Modeling',
+    badge: 'Personal' as const,
+    studio: 'Personal',
+    genre: '3D Art / Game Assets',
+    platform: '–',
+    engine: 'Blender / Maya',
+    description: 'A portfolio of 3D modeling work spanning game-ready weapons, characters, and mechanical designs. Created for use in shipped game projects and as standalone showcases of technical modeling, UV unwrapping, PBR texturing, and character rigging skill.',
+    highlights: [
+      'Spiderman character model with full deformation rig',
+      'Game-ready weapon assets used in shipped titles (M416, P1911, SSG Scout)',
+      'Hard-surface mechanical and robot character designs',
+    ],
+    contributions: [
+      'High-poly & low-poly modeling pipeline',
+      'UV unwrapping and PBR texture baking',
+      'Character rigging and weight painting',
+      'Asset optimization for real-time game engines',
+    ],
+    features: [
+      'Game-ready weapon models',
+      'Character modeling & rigging',
+      'Hard-surface mechanical design',
+      'PBR texturing pipeline',
+    ],
+    tags: ['Blender', 'Maya', 'Substance Painter', '3D Modeling', 'Character Rigging'],
+    playUrl: '',
+    caseStudy: '',
+    images: ['art3d_1.png', 'art3d_2.png', 'art3d_3.png', 'art3d_4.png', 'art3d_5.png', 'art3d_6.png', 'art3d_7.png'],
+    fallback: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1000',
   },
 ];
 
@@ -128,212 +335,288 @@ const onImgErr = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) => 
   if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
 };
 
+// ── Bullet item used in the modal ─────────────────────────────────────────────
+const Bullet = ({ text }: { text: string }) => (
+  <li className="flex items-start gap-3 text-sm text-white/90">
+    <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+    {text}
+  </li>
+);
+
 // ── Gallery Modal ─────────────────────────────────────────────────────────────
 const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
-  const [idx, setIdx]           = useState(0);
-  const [fullscreen, setFs]     = useState(false);
+  const [fsIdx, setFsIdx] = useState<number | null>(null);
 
   const imgs = project.images.length > 0
     ? project.images.map(f => `/projects/${f}`)
     : [project.fallback];
 
-  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i - 1 + imgs.length) % imgs.length); };
-  const next = (e: React.MouseEvent) => { e.stopPropagation(); setIdx(i => (i + 1) % imgs.length); };
+  const prevImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFsIdx(i => i === null ? 0 : (i - 1 + imgs.length) % imgs.length);
+  };
+  const nextImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFsIdx(i => i === null ? 0 : (i + 1) % imgs.length);
+  };
 
-  // Keyboard: Esc closes fullscreen (or modal), arrows navigate in fullscreen
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape')      { fullscreen ? setFs(false) : onClose(); }
-      if (!fullscreen) return;
-      if (e.key === 'ArrowLeft')   setIdx(i => (i - 1 + imgs.length) % imgs.length);
-      if (e.key === 'ArrowRight')  setIdx(i => (i + 1) % imgs.length);
+      if (e.key === 'Escape') {
+        if (fsIdx !== null) { setFsIdx(null); }
+        else { onClose(); }
+        return;
+      }
+      if (fsIdx === null) return;
+      if (e.key === 'ArrowLeft')  setFsIdx(i => i === null ? null : (i - 1 + imgs.length) % imgs.length);
+      if (e.key === 'ArrowRight') setFsIdx(i => i === null ? null : (i + 1) % imgs.length);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [fullscreen, imgs.length, onClose]);
+  }, [fsIdx, imgs.length, onClose]);
 
   return (
     <>
-    <AnimatePresence>
-      <motion.div
-        key="overlay"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-        className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      >
+      <AnimatePresence>
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 20 }}
-          animate={{ opacity: 1, scale: 1,    y: 0  }}
-          exit={{ opacity: 0, scale: 0.92,    y: 20 }}
-          transition={{ duration: 0.22 }}
-          onClick={e => e.stopPropagation()}
-          className="bg-slate-900 border border-slate-700 rounded-sm max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+          key="overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         >
-          {/* ── Main image ── */}
-          <div className="relative h-64 bg-slate-950 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            transition={{ duration: 0.22 }}
+            onClick={e => e.stopPropagation()}
+            className="bg-[#0f0f0f] border border-slate-800 rounded-sm max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl scrollbar-hide"
+          >
+            {/* ── Hero Banner ── */}
+            <div className="relative h-48 sm:h-60 overflow-hidden flex-shrink-0">
+              <img
+                src={imgs[0]}
+                alt={project.title}
+                onError={onImgErr(project.fallback)}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none" />
+
+              {/* Title overlay */}
+              <div className="absolute bottom-0 left-0 p-6 pr-14">
+                <h2 className="text-2xl sm:text-4xl font-black uppercase text-white tracking-wider leading-none mb-2">
+                  {project.title}
+                </h2>
+                <p className="text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                  {project.subtitle}
+                </p>
+              </div>
+
+              {/* Close */}
+              <button
+                type="button"
+                onClick={onClose}
+                className="absolute top-4 right-4 w-9 h-9 bg-black/60 border border-slate-600 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors z-10"
+              >
+                <X size={15} />
+              </button>
+            </div>
+
+            {/* ── Two-column body ── */}
+            <div className="flex flex-col md:flex-row">
+
+              {/* Left column */}
+              <div className="flex-1 min-w-0 p-6 md:p-8 md:border-r md:border-slate-800/60">
+
+                {/* About */}
+                <section className="mb-8">
+                  <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">About the Game</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">{project.description}</p>
+                </section>
+
+                {/* Highlights */}
+                {project.highlights.length > 0 && (
+                  <section className="mb-8">
+                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Project Highlights</h3>
+                    <ul className="space-y-2.5">
+                      {project.highlights.map((h, i) => <Bullet key={i} text={h} />)}
+                    </ul>
+                  </section>
+                )}
+
+                {/* Contributions */}
+                {project.contributions.length > 0 && (
+                  <section className="mb-8">
+                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">My Contributions</h3>
+                    <ul className="space-y-2.5">
+                      {project.contributions.map((c, i) => <Bullet key={i} text={c} />)}
+                    </ul>
+                  </section>
+                )}
+
+                {/* Gallery */}
+                {imgs.length > 1 && (
+                  <section className="mb-8">
+                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-3">Gallery</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {imgs.map((img, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => setFsIdx(i)}
+                          className="aspect-video overflow-hidden rounded-sm border border-slate-800 hover:border-cyan-500/50 transition-colors group"
+                        >
+                          <img
+                            src={img}
+                            alt=""
+                            onError={onImgErr(project.fallback)}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-80 group-hover:opacity-100"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Actions */}
+                <div className="flex gap-3 flex-wrap">
+                  {isActive(project.playUrl) ? (
+                    <a href={project.playUrl} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-widest transition-colors rounded-sm">
+                      <Play size={12} className="fill-current" /> Play / Download
+                    </a>
+                  ) : (
+                    <span className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-slate-600 font-black text-xs uppercase tracking-widest cursor-not-allowed rounded-sm">
+                      <Lock size={12} /> Demo Coming Soon
+                    </span>
+                  )}
+                  {isActive(project.caseStudy) && (
+                    <a href={project.caseStudy} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-5 py-2.5 border border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-indigo-400 font-black text-xs uppercase tracking-widest transition-all rounded-sm">
+                      <ExternalLink size={12} /> Case Study
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Right column */}
+              <div className="w-full md:w-64 lg:w-72 flex-shrink-0 p-6 md:p-8">
+
+                {/* Project Details */}
+                <section className="mb-8">
+                  <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-4">Project{' '}Details</h3>
+                  <ul className="space-y-3">
+                    {project.studio && (
+                      <li className="flex items-start gap-3 text-sm">
+                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                        <span><strong className="text-white">Studio:</strong>{' '}
+                          <span className="text-slate-300">{project.studio}</span></span>
+                      </li>
+                    )}
+                    <li className="flex items-start gap-3 text-sm">
+                      <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                      <span><strong className="text-white">Genre:</strong>{' '}
+                        <span className="text-slate-300">{project.genre}</span></span>
+                    </li>
+                    {project.platform && project.platform !== '–' && (
+                      <li className="flex items-start gap-3 text-sm">
+                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                        <span><strong className="text-white">Platform:</strong>{' '}
+                          <span className="text-slate-300">{project.platform}</span></span>
+                      </li>
+                    )}
+                    {project.engine && project.engine !== '–' && (
+                      <li className="flex items-start gap-3 text-sm">
+                        <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
+                        <span><strong className="text-white">Engine:</strong>{' '}
+                          <span className="text-slate-300">{project.engine}</span></span>
+                      </li>
+                    )}
+                  </ul>
+                </section>
+
+                {/* Features */}
+                {project.features.length > 0 && (
+                  <section className="mb-8">
+                    <h3 className="text-base font-black uppercase text-cyan-400 tracking-wider mb-4">Features</h3>
+                    <ul className="space-y-2.5">
+                      {project.features.map((f, i) => <Bullet key={i} text={f} />)}
+                    </ul>
+                  </section>
+                )}
+
+                {/* Tools & Tech */}
+                <section>
+                  <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider mb-3">Tools & Tech</h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tags.map(t => (
+                      <span key={t} className="px-2 py-1 bg-slate-800 text-slate-300 text-[9px] uppercase font-bold rounded-sm border border-slate-700">{t}</span>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── Fullscreen overlay — z-[60] sits above the modal (z-50) ── */}
+      <AnimatePresence>
+        {fsIdx !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 bg-black z-[60] flex items-center justify-center"
+            onClick={() => setFsIdx(null)}
+          >
             <img
-              key={idx}
-              src={imgs[idx]}
+              src={imgs[fsIdx]}
               alt={project.title}
               onError={onImgErr(project.fallback)}
-              onClick={() => setFs(true)}
-              className="w-full h-full object-cover cursor-zoom-in"
+              onClick={e => e.stopPropagation()}
+              className="max-w-full max-h-full object-contain select-none"
+              style={{ maxHeight: '100dvh', maxWidth: '100dvw' }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none" />
 
-            {/* Fullscreen expand */}
-            <button type="button" onClick={e => { e.stopPropagation(); setFs(true); }}
-              className="absolute top-3 right-12 w-8 h-8 bg-black/60 border border-slate-600 flex items-center justify-center text-slate-300 hover:text-white rounded-sm z-10 transition-colors"
-              title="Fullscreen">
-              <Maximize2 size={13} />
-            </button>
-            {/* Close */}
-            <button type="button" onClick={onClose}
-              className="absolute top-3 right-3 w-8 h-8 bg-black/60 border border-slate-600 flex items-center justify-center text-slate-300 hover:text-white rounded-sm z-10 transition-colors">
-              <X size={14} />
+            <button type="button" onClick={() => setFsIdx(null)}
+              className="absolute top-5 right-5 w-10 h-10 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white rounded-sm transition-colors">
+              <X size={18} />
             </button>
 
-            {/* Prev / Next */}
             {imgs.length > 1 && (
               <>
-                <button type="button" onClick={prev}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/80 border border-slate-700 flex items-center justify-center text-white rounded-sm z-10 transition-colors">
-                  <ChevronLeft size={16} />
+                <button type="button" onClick={prevImg}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white rounded-sm transition-colors">
+                  <ChevronLeft size={24} />
                 </button>
-                <button type="button" onClick={next}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/80 border border-slate-700 flex items-center justify-center text-white rounded-sm z-10 transition-colors">
-                  <ChevronRight size={16} />
+                <button type="button" onClick={nextImg}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white rounded-sm transition-colors">
+                  <ChevronRight size={24} />
                 </button>
-                {/* Dot indicators */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {imgs.map((_, i) => (
-                    <button key={i} onClick={e => { e.stopPropagation(); setIdx(i); }}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === idx ? 'bg-white' : 'bg-white/35'}`} />
-                  ))}
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/40 text-sm font-mono tracking-widest">
+                  {fsIdx + 1} / {imgs.length}
                 </div>
-                <div className="absolute bottom-3 right-3 text-[10px] text-white/50 font-mono z-10">
-                  {idx + 1} / {imgs.length}
+                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-black/50 rounded-sm backdrop-blur-sm max-w-[90vw] overflow-x-auto">
+                  {imgs.map((img, i) => (
+                    <button key={i} type="button" onClick={e => { e.stopPropagation(); setFsIdx(i); }}
+                      className={`flex-shrink-0 w-14 h-10 overflow-hidden rounded-sm border-2 transition-colors ${i === fsIdx ? 'border-white' : 'border-transparent opacity-50 hover:opacity-80'}`}>
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
                 </div>
               </>
             )}
 
-            {/* Badges */}
-            <div className="absolute top-3 left-3 flex gap-2 z-10">
-              <span className="px-2.5 py-1 bg-indigo-600 text-[9px] font-black uppercase tracking-widest text-white rounded-sm">
-                {project.category}
-              </span>
-              <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-widest border rounded-sm ${badgeCls[project.badge] ?? ''}`}>
-                {project.badge}
-              </span>
+            <div className="absolute top-5 left-5 text-white/40 text-xs uppercase tracking-widest font-bold">
+              {project.title}
             </div>
-          </div>
-
-          {/* ── Thumbnail strip ── */}
-          {imgs.length > 1 && (
-            <div className="flex gap-2 px-4 py-3 overflow-x-auto bg-slate-950/60 scrollbar-hide">
-              {imgs.map((img, i) => (
-                <button key={i} type="button" onClick={e => { e.stopPropagation(); setIdx(i); }}
-                  className={`flex-shrink-0 w-20 h-14 overflow-hidden rounded-sm border-2 transition-colors ${i === idx ? 'border-indigo-500' : 'border-transparent opacity-60 hover:opacity-100'}`}>
-                  <img src={img} alt="" onError={onImgErr(project.fallback)} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* ── Info ── */}
-          <div className="p-6">
-            <h3 className="text-xl font-black uppercase text-white mb-2">{project.title}</h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5">{project.description}</p>
-
-            <div className="flex flex-wrap gap-2 mb-6">
-              {project.tags.map(t => (
-                <span key={t} className="px-2 py-1 bg-slate-800 text-slate-300 text-[10px] uppercase font-bold rounded-sm border border-slate-700">{t}</span>
-              ))}
-            </div>
-
-            <div className="flex gap-3 flex-wrap">
-              {isActive(project.playUrl) ? (
-                <a href={project.playUrl} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-widest transition-colors rounded-sm">
-                  <Play size={12} className="fill-current" /> Play / Download
-                </a>
-              ) : (
-                <span className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-slate-600 font-black text-xs uppercase tracking-widest cursor-not-allowed rounded-sm">
-                  <Lock size={12} /> Demo Coming Soon
-                </span>
-              )}
-              {isActive(project.caseStudy) && (
-                <a href={project.caseStudy} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 border border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-indigo-400 font-black text-xs uppercase tracking-widest transition-all rounded-sm">
-                  <ExternalLink size={12} /> Case Study
-                </a>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-
-    {/* ── Fullscreen overlay — z-[60] sits above the modal (z-50) ── */}
-    <AnimatePresence>
-      {fullscreen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-          className="fixed inset-0 bg-black z-[60] flex items-center justify-center"
-          onClick={() => setFs(false)}
-        >
-          <img
-            src={imgs[idx]}
-            alt={project.title}
-            onError={onImgErr(project.fallback)}
-            onClick={e => e.stopPropagation()}
-            className="max-w-full max-h-full object-contain select-none"
-            style={{ maxHeight: '100dvh', maxWidth: '100dvw' }}
-          />
-
-          {/* Close */}
-          <button type="button" onClick={() => setFs(false)}
-            className="absolute top-5 right-5 w-10 h-10 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white rounded-sm transition-colors">
-            <X size={18} />
-          </button>
-
-          {/* Prev / Next */}
-          {imgs.length > 1 && (
-            <>
-              <button type="button" onClick={prev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white rounded-sm transition-colors">
-                <ChevronLeft size={24} />
-              </button>
-              <button type="button" onClick={next}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white rounded-sm transition-colors">
-                <ChevronRight size={24} />
-              </button>
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/40 text-sm font-mono tracking-widest">
-                {idx + 1} / {imgs.length}
-              </div>
-              {/* Thumbnail strip */}
-              <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-black/50 rounded-sm backdrop-blur-sm max-w-[90vw] overflow-x-auto">
-                {imgs.map((img, i) => (
-                  <button key={i} type="button" onClick={e => { e.stopPropagation(); setIdx(i); }}
-                    className={`flex-shrink-0 w-14 h-10 overflow-hidden rounded-sm border-2 transition-colors ${i === idx ? 'border-white' : 'border-transparent opacity-50 hover:opacity-80'}`}>
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-
-          <div className="absolute top-5 left-5 text-white/40 text-xs uppercase tracking-widest font-bold">
-            {project.title}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
@@ -392,13 +675,11 @@ const Projects = () => {
                     {project.badge}
                   </span>
                 </div>
-                {/* Image count badge */}
                 {project.images.length > 1 && (
                   <div className="absolute bottom-3 right-3 px-2 py-0.5 bg-black/60 text-[9px] text-white/70 font-mono rounded-sm">
                     {project.images.length} imgs
                   </div>
                 )}
-                {/* Hover overlay */}
                 <div className="absolute inset-0 bg-indigo-600/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="px-4 py-2 bg-indigo-600 text-white text-xs font-black uppercase tracking-widest">
                     View Gallery
