@@ -48,7 +48,7 @@ const About = () => {
             {/* Bio box */}
             <div className="border border-indigo-500/50 bg-slate-900/40 rounded-sm p-6 space-y-4">
               <p className="text-slate-200 text-base leading-relaxed">
-                I'm Sahil — a game designer from Pune with three years of experience building games that actually ship. My work spans competitive multiplayer FPS design, government-commissioned VR experiences, and experimental web3 gaming.
+                Myself Sahil Bapardekar — a Game Designer from Mumbai with 3+ years of experience building games that actually ship. My work spans competitive multiplayer FPS design, government-commissioned VR experiences, and experimental web3 gaming.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed">
                 I believe in the feel-first principle: every mechanic should be satisfying before it's balanced, intuitive before it's deep. I spend as much time studying what makes great games great as I do designing them — from the Spelunky rope to the Dark Souls bonfire, design lives in the details.
