@@ -11,6 +11,9 @@ const isPointer = (el: Element | null, depth = 0): boolean => {
 };
 
 export default function Cursor() {
+  // Don't render on touch/coarse-pointer devices — divs would sit at 0,0 otherwise
+  if (typeof window !== 'undefined' && !window.matchMedia('(pointer: fine)').matches) return null;
+
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const mouse   = useRef({ x: -300, y: -300 });

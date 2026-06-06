@@ -424,6 +424,11 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                       {project.subtitle}
                     </p>
                   </div>
+                  {/* Close — mobile only */}
+                  <button type="button" onClick={onClose}
+                    className="md:hidden absolute top-4 right-4 w-9 h-9 bg-black/60 border border-slate-600 rounded-full flex items-center justify-center text-white z-10">
+                    <X size={15} />
+                  </button>
                 </div>
 
                 {/* Text content */}
@@ -502,6 +507,22 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                     </div>
                   </section>
 
+                  {/* Mobile-only image gallery (hidden on desktop — desktop uses right column) */}
+                  {imgs.length > 1 && (
+                    <div className="md:hidden">
+                      <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider mb-3">Gallery</h3>
+                      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        {imgs.map((img, i) => (
+                          <button key={i} type="button" onClick={() => setFsIdx(i)}
+                            className="flex-shrink-0 w-36 aspect-video rounded-sm overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition-colors group">
+                            <img src={img} alt="" onError={onImgErr(project.fallback)}
+                              className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex gap-3 flex-wrap pb-2">
                     {isActive(project.playUrl) ? (
                       <a href={project.playUrl} target="_blank" rel="noopener noreferrer"
@@ -523,8 +544,8 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                 </div>
               </div>
 
-              {/* ── Right column: close button + stacked gallery images ── */}
-              <div className="relative w-full md:w-56 lg:w-64 flex-shrink-0 border-t md:border-t-0 md:border-l border-slate-800 overflow-y-auto scrollbar-hide bg-[#0a0a0a]">
+              {/* ── Right column: close button + stacked gallery images (desktop only) ── */}
+              <div className="hidden md:flex md:flex-col relative md:w-56 lg:w-64 flex-shrink-0 border-l border-slate-800 overflow-y-auto scrollbar-hide bg-[#0a0a0a]">
 
                 {/* Close button — sticky at the top */}
                 <div className="sticky top-0 z-10 flex justify-end p-3 bg-[#0a0a0a]/80 backdrop-blur-sm">
