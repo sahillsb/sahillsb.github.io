@@ -44,7 +44,7 @@ const projects = [
     subtitle: 'GOVERNMENT-COMMISSIONED CIVIC VR EXPERIENCE',
     category: 'VR Experience',
     badge: 'Shipped' as const,
-    studio: 'TEM',
+    studio: 'Dot9 Games',
     genre: 'VR / Simulation',
     platform: 'Android / iOS (Google Cardboard)',
     engine: 'Unity',
