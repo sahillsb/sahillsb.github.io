@@ -138,7 +138,7 @@ const projects = [
     tags: ['Unity', 'Blender', 'Substance Painter'],
     playUrl: '',
     caseStudy: '',
-    images: ['rapid_1.jpg', 'rapid_2.jpg', 'rapid_3.jpg', 'rapid_4.jpg', 'rapid_5.jpg'],
+    images: ['rapid_1.jpg', 'rapid_2.jpg', 'rapid_3.jpg', 'rapid_4.jpg', 'rapid_5.jpg', 'rapid_6.mp4'],
     fallback: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=1000',
   },
   {
@@ -172,7 +172,7 @@ const projects = [
     tags: ['Unity', 'Photoshop'],
     playUrl: '',
     caseStudy: '',
-    images: ['coindash_1.jpg', 'coindash_2.jpg', 'coindash_3.jpg', 'coindash_4.jpg', 'coindash_5.jpg', 'coindash_6.png'],
+    images: ['coindash_1.jpg', 'coindash_2.jpg', 'coindash_3.jpg', 'coindash_4.jpg', 'coindash_5.jpg', 'coindash_6.png', 'coindash_7.mp4'],
     fallback: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000',
   },
   {
@@ -206,7 +206,7 @@ const projects = [
     tags: ['Unity', 'Blender'],
     playUrl: '',
     caseStudy: '',
-    images: [],
+    images: ['parcelstack_1.png', 'parcelstack_2.png', 'parcelstack_3.png', 'parcelstack_4.png', 'parcelstack_5.png', 'parcelstack_6.mp4'],
     fallback: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=1000',
   },
   // ── Research ──────────────────────────────────────────────────────────────
@@ -335,6 +335,25 @@ const onImgErr = (fallback: string) => (e: SyntheticEvent<HTMLImageElement>) => 
   if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
 };
 
+const isVideo = (src: string) => /\.(mp4|webm|ogg)$/i.test(src);
+
+// Renders an image or a video thumbnail with a play badge
+const MediaThumb = ({ src, fallback, className }: { src: string; fallback: string; className: string }) => {
+  if (isVideo(src)) {
+    return (
+      <div className="relative w-full h-full">
+        <video src={src} className={className} muted preload="metadata" playsInline />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-9 h-9 rounded-full bg-black/60 border border-white/40 flex items-center justify-center">
+            <Play size={14} className="text-white fill-white ml-0.5" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return <img src={src} alt="" onError={onImgErr(fallback)} className={className} />;
+};
+
 const Bullet = ({ text }: { text: string }) => (
   <li className="flex items-start gap-3 text-sm text-white/90">
     <span className="w-2 h-2 mt-[5px] bg-cyan-400 flex-shrink-0" />
@@ -407,10 +426,10 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
               {/* ── Left column: hero + all text ── */}
               <div className="flex-1 min-w-0 flex flex-col overflow-y-auto scrollbar-hide">
 
-                {/* Hero */}
+                {/* Hero — always use the first non-video frame */}
                 <div className="relative h-52 sm:h-64 flex-shrink-0 overflow-hidden">
                   <img
-                    src={imgs[0]}
+                    src={imgs.find(s => !isVideo(s)) ?? project.fallback}
                     alt={project.title}
                     onError={onImgErr(project.fallback)}
                     className="w-full h-full object-cover"
@@ -515,7 +534,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                         {imgs.map((img, i) => (
                           <button key={i} type="button" onClick={() => setFsIdx(i)}
                             className="flex-shrink-0 w-36 aspect-video rounded-sm overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition-colors group">
-                            <img src={img} alt="" onError={onImgErr(project.fallback)}
+                            <MediaThumb src={img} fallback={project.fallback}
                               className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" />
                           </button>
                         ))}
@@ -567,12 +586,8 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                       onClick={() => setFsIdx(i)}
                       className="block w-full group rounded-sm overflow-hidden flex-shrink-0 border border-slate-800/60 hover:border-indigo-500/50 transition-colors duration-200"
                     >
-                      <img
-                        src={img}
-                        alt=""
-                        onError={onImgErr(project.fallback)}
-                        className="w-full aspect-[4/3] object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
-                      />
+                      <MediaThumb src={img} fallback={project.fallback}
+                        className="w-full aspect-[4/3] object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300" />
                     </button>
                   ))}
                 </div>
@@ -593,14 +608,24 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
             className="fixed inset-0 bg-black z-[60] flex items-center justify-center"
             onClick={() => setFsIdx(null)}
           >
-            <img
-              src={imgs[fsIdx]}
-              alt={project.title}
-              onError={onImgErr(project.fallback)}
-              onClick={e => e.stopPropagation()}
-              className="max-w-full max-h-full object-contain select-none"
-              style={{ maxHeight: '100dvh', maxWidth: '100dvw' }}
-            />
+            {isVideo(imgs[fsIdx]) ? (
+              <video
+                src={imgs[fsIdx]}
+                onClick={e => e.stopPropagation()}
+                controls autoPlay playsInline
+                className="max-w-full max-h-full"
+                style={{ maxHeight: '100dvh', maxWidth: '100dvw' }}
+              />
+            ) : (
+              <img
+                src={imgs[fsIdx]}
+                alt={project.title}
+                onError={onImgErr(project.fallback)}
+                onClick={e => e.stopPropagation()}
+                className="max-w-full max-h-full object-contain select-none"
+                style={{ maxHeight: '100dvh', maxWidth: '100dvw' }}
+              />
+            )}
 
             <button type="button" onClick={() => setFsIdx(null)}
               className="absolute top-5 right-5 w-10 h-10 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white rounded-sm transition-colors">
@@ -624,7 +649,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
                   {imgs.map((img, i) => (
                     <button key={i} type="button" onClick={e => { e.stopPropagation(); setFsIdx(i); }}
                       className={`flex-shrink-0 w-14 h-10 overflow-hidden rounded-sm border-2 transition-colors ${i === fsIdx ? 'border-white' : 'border-transparent opacity-50 hover:opacity-80'}`}>
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <MediaThumb src={img} fallback={project.fallback} className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
