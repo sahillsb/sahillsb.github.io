@@ -7,6 +7,7 @@ import Hero        from './components/Hero';
 import About       from './components/About';
 import QuestLog    from './components/QuestLog';
 import Projects    from './components/Projects';
+import DesignDocs  from './components/DesignDocs';
 import Skills      from './components/Skills';
 import Inventory   from './components/Inventory';
 import Contact     from './components/Contact';
@@ -26,6 +27,7 @@ function App() {
         <About />
         <QuestLog />
         <Projects />
+        <DesignDocs />
         <Skills />
         <Inventory />
         <Contact />

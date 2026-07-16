@@ -10,10 +10,11 @@ const LINKEDIN_URL = 'https://www.linkedin.com/in/sahil-bapardekar-5b1b8b210/';
 // ─────────────────────────────────────────────────────────────────────────────
 
 const navLinks = [
-  { name: 'About',    href: '#about'    },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Skills',   href: '#skills'   },
-  { name: 'Contact',  href: '#contact'  },
+  { name: 'About',    href: '#about'       },
+  { name: 'Projects', href: '#projects'    },
+  { name: 'Design',   href: '#design-docs' },
+  { name: 'Skills',   href: '#skills'      },
+  { name: 'Contact',  href: '#contact'     },
 ];
 
 const Navbar = () => {
