@@ -1,4 +1,5 @@
 import { useState, useEffect, type SyntheticEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { ExternalLink, Play, Lock, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -402,7 +403,7 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
     return () => window.removeEventListener('keydown', onKey);
   }, [fsIdx, imgs.length, onClose]);
 
-  return (
+  return createPortal(
     <>
       <AnimatePresence>
         <motion.div
@@ -662,7 +663,8 @@ const Modal = ({ project, onClose }: { project: Project; onClose: () => void }) 
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </>,
+    document.body
   );
 };
 

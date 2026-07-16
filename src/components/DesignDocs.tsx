@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Rocket, FileText, Search, Download, X, type LucideIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -155,7 +156,7 @@ const Modal = ({ doc, onClose }: { doc: Doc; onClose: () => void }) => {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
         key="overlay"
@@ -244,7 +245,8 @@ const Modal = ({ doc, onClose }: { doc: Doc; onClose: () => void }) => {
           </motion.div>
         </div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
