@@ -33,6 +33,23 @@ export default function Cursor() {
       hovRef.current = isPointer(el);
     };
 
+    // Once the pointer crosses into an <iframe> (e.g. the embedded PDF
+    // viewer), the parent document stops receiving mousemove entirely —
+    // so the custom cursor would otherwise freeze at the crossing point.
+    // Hide it on entry and restore it on exit, using mouseover/mouseout
+    // (which do fire on the iframe's bounding box from the parent doc).
+    const setVisible = (visible: boolean) => {
+      const v = visible ? '1' : '0';
+      if (dotRef.current)  dotRef.current.style.opacity  = v;
+      if (ringRef.current) ringRef.current.style.opacity = v;
+    };
+    const onOver = (e: MouseEvent) => {
+      if ((e.target as HTMLElement)?.tagName === 'IFRAME') setVisible(false);
+    };
+    const onOut = (e: MouseEvent) => {
+      if ((e.target as HTMLElement)?.tagName === 'IFRAME') setVisible(true);
+    };
+
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
     let raf: number;
 
@@ -49,9 +66,13 @@ export default function Cursor() {
     };
 
     window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseover', onOver);
+    document.addEventListener('mouseout', onOut);
     raf = requestAnimationFrame(tick);
     return () => {
       window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('mouseout', onOut);
       cancelAnimationFrame(raf);
     };
   }, []);
@@ -71,6 +92,8 @@ export default function Cursor() {
           pointerEvents:   'none',
           zIndex:          10001,
           willChange:      'transform',
+          opacity:         1,
+          transition:      'opacity 0.15s ease',
         }}
       />
       {/* Outer ring — thick, white + difference blend */}
@@ -86,6 +109,8 @@ export default function Cursor() {
           pointerEvents:'none',
           zIndex:       10000,
           willChange:   'transform',
+          opacity:      1,
+          transition:   'opacity 0.15s ease',
         }}
       />
     </>

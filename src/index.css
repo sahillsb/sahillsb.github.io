@@ -67,4 +67,8 @@ html {
 /* Hide native cursor on pointer devices */
 @media (pointer: fine) {
   *, *::before, *::after { cursor: none !important; }
+  /* ...except iframes (e.g. the embedded PDF viewer) — the custom cursor
+     can't track the pointer once it's inside a separate browsing context,
+     so let the native cursor show there instead. */
+  iframe { cursor: auto !important; }
 }
