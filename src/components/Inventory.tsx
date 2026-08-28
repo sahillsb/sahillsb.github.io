@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import {
   Box,
-  Cpu,
+  Frame,
   Layers,
   Terminal,
   PenTool,
-  Database,
+  Palette,
   LucideIcon,
 } from 'lucide-react';
 
@@ -42,16 +42,16 @@ const items: Item[] = [
     description: 'Version control and team collaboration — the chronicle of every change across every project.',
   },
   {
-    name: 'Playfab',
+    name: 'Figma',
     rarity: 'Common',
-    Icon: Database,
-    description: 'Backend service for player economy, live ops, and session data management.',
+    Icon: Frame,
+    description: 'UI/UX design and prototyping — wireframes, interactive flows, and interface mockups.',
   },
   {
-    name: 'Slack',
+    name: 'Adobe Creative Suite',
     rarity: 'Common',
-    Icon: Cpu,
-    description: 'Team communication hub for async dev collaboration, sprint syncs, and fire-fighting.',
+    Icon: Palette,
+    description: 'Photoshop and Illustrator for concept art, UI assets, and marketing materials.',
   },
 ];
 
