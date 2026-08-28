@@ -3,7 +3,7 @@ import { GithubIcon, LinkedinIcon } from './icons';
 
 // ── UPDATE THESE with your real links ─────────────────────────────────────────
 const EMAIL = 'sahilbapardekar01@gmail.com';
-const GITHUB_URL = 'https://github.com/sahilgamedesigner';
+const GITHUB_URL = 'https://github.com/sahillsb';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/sahil-bapardekar-5b1b8b210/';
 // ─────────────────────────────────────────────────────────────────────────────
 
