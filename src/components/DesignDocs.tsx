@@ -42,6 +42,15 @@ const docs = [
     tags: ['Competitive Analysis', 'Monetization Audit', 'Ad Strategy', 'UX Critique'],
     pdfUrl: '/docs/tile-explorer-deconstruct.pdf',
   },
+  {
+    key: 'runandescape',
+    title: 'Run And Escape',
+    subtitle: 'ONE-FINGER STEALTH PUZZLE — FULL GAME DESIGN DOCUMENT',
+    type: 'GDD' as DocType,
+    concept: 'A casual stealth puzzle controlled entirely by one finger. A lab test subject sways through sense-based hiding tiers — sight, sound, scent, vibration — to slip past patrolling enemies and reach the exit, collecting parts that assemble into a cosmetic escape kit as the theme evolves from lab to jungle to city.',
+    tags: ['Stealth Puzzle', 'Single-Input Design', 'Economy Design', 'Level Design'],
+    pdfUrl: '/docs/run-and-escape-gdd.pdf',
+  },
 ];
 
 type Doc = typeof docs[0];
